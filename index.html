@@ -231,6 +231,17 @@
     max-width:480px;
   }
 
+  .site-footer{
+    text-align:center;
+    font-size:0.7rem;
+    color:#9a8f78;
+    margin-top:20px;
+    padding-top:12px;
+    border-top:1px dashed var(--gold-soft);
+    width:100%;
+    max-width:480px;
+  }
+
   .win-overlay{
     position:fixed;
     inset:0;
@@ -311,9 +322,11 @@
   <button class="act" id="btnRegenerate">🔀 重新產生</button>
   <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
   <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
-  <button class="act secondary" id="btnDonate">☕ 贊助小工具</button>
+  <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
 </div>
 <p class="status" id="status"></p>
+
+<footer class="site-footer">聯絡信箱:hsuhuiyen@gmail.com</footer>
 
 <div class="win-overlay" id="winOverlay" hidden>
   <div class="win-modal">
@@ -329,7 +342,7 @@ const LIFF_ID = "2011366809-ZnSyBkIS"; // 例如 "1234567890-AbCdEfGh"
 // --------------------------------------------------------------------
 
 // ------- 贊助連結:之後把你的贊助頁面網址填在這裡(例如 Buy Me a Coffee / Ko-fi / PayPal.me) -------
-const DONATE_URL = ""; // 例如 "https://buymeacoffee.com/yourname"
+const DONATE_URL = "https://p.ecpay.com.tw/7DE7DBE"; // 例如 "https://buymeacoffee.com/yourname"
 // --------------------------------------------------------------------
 
 const ANIMALS = [
