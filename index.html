@@ -34,7 +34,6 @@
   .card{
     width:100%;
     max-width:480px;
-    align-self:stretch;
     background:var(--cream);
     border:2px solid var(--gold);
     border-radius:18px;
@@ -67,12 +66,6 @@
     color:var(--olive);
     margin:6px 0 2px;
     letter-spacing:0.5px;
-  }
-  .subtitle{
-    font-size:0.85rem;
-    color:var(--gold);
-    letter-spacing:2px;
-    text-transform:uppercase;
   }
   .rule{
     font-size:0.78rem;
@@ -133,8 +126,7 @@
   }
   .cell:active{transform:scale(0.96);}
   .cell .icon{font-size:1.5rem;line-height:1;margin-bottom:2px;}
-  .cell .zh{font-size:0.64rem;font-weight:700;line-height:1.15;word-break:break-word;}
-  .cell .en{font-size:0.48rem;color:#9a8f78;line-height:1.1;margin-top:1px;word-break:break-word;}
+  .cell .name{font-size:0.64rem;font-weight:700;line-height:1.15;word-break:break-word;}
   .cell.checked{border-width:3px;border-color:var(--check);}
 
   .cell .photo,
@@ -157,11 +149,25 @@
     padding:3px 4px;
     margin-top:0;
   }
-  .cell.has-photo .zh,
-  .cell.has-img .zh{font-size:0.5rem;color:#fff;}
-  .cell.has-photo .en,
-  .cell.has-img .en{display:none;}
+  .cell.has-photo .name,
+  .cell.has-img .name{font-size:0.5rem;color:#fff;}
   .cell .label{position:relative;z-index:2;}
+
+  .lang-toggle{
+    position:absolute;
+    top:14px;right:14px;
+    z-index:6;
+    border:1px solid var(--gold);
+    background:transparent;
+    color:var(--olive);
+    font-size:0.7rem;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:20px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .lang-toggle:active{opacity:0.7;}
 
   .cell-menu{
     position:absolute;
@@ -299,22 +305,21 @@
 <div class="card" id="captureCard">
   <div class="corner tl"></div><div class="corner tr"></div>
   <div class="corner bl"></div><div class="corner br"></div>
+  <button type="button" class="lang-toggle" id="langToggle">EN</button>
 
   <header>
-    <div class="subtitle">African Safari Animal Bingo</div>
-    <h1>非洲遊獵動物賓果卡</h1>
+    <h1 id="mainTitle">非洲遊獵動物賓果卡</h1>
   </header>
 
-  <p class="rule">點一下格子格子外圍會有紅框,長按格子可以上傳或移除照片，率先完成任意 2 條線(橫、直、斜皆可)算獲勝!</p>
-
+  <p class="rule" id="ruleText">點一下格子格子外圍會有紅框,長按格子可以上傳或移除照片,率先完成任意 2 條線(橫、直、斜皆可)算獲勝!</p>
 
   <div class="meta">
     <div>
-      <label>姓名 NAME</label>
+      <label id="nameLabel">姓名 NAME</label>
       <input id="nameInput" class="value" placeholder="輸入你的名字" />
     </div>
     <div style="text-align:right;">
-      <label>日期 DATE</label>
+      <label id="dateLabel">日期 DATE</label>
       <div class="value" id="dateValue">-</div>
     </div>
   </div>
@@ -332,13 +337,13 @@
 </div>
 <p class="status" id="status"></p>
 
-<footer class="site-footer">聯絡信箱:hsuhuiyen@gmail.com</footer>
+<footer class="site-footer"><span id="footerLabel">聯絡信箱:</span>hsuhuiyen@gmail.com</footer>
 
 <div class="win-overlay" id="winOverlay" hidden>
   <div class="win-modal">
-    <div class="win-title">🎉 BINGO! 🎉</div>
-    <div class="win-sub">恭喜你連成兩條線了!</div>
-    <div class="win-donate-msg">如果這個賓果有為你的 Safari 之旅增添樂趣,歡迎按右下角隨意 donate!祝大家順利集滿非洲五霸!</div>
+    <div class="win-title" id="winTitle">🎉 BINGO! 🎉</div>
+    <div class="win-sub" id="winSub">恭喜你連成兩條線了!</div>
+    <div class="win-donate-msg" id="winDonateMsg">如果這個賓果有為你的 Safari 之旅增添樂趣,歡迎按右下角隨意 donate!祝大家順利集滿非洲五霸!</div>
     <button type="button" class="win-close" id="winClose">關閉</button>
   </div>
 </div>
@@ -348,8 +353,9 @@
 const LIFF_ID = "2011366809-ZnSyBkIS"; // 例如 "1234567890-AbCdEfGh"
 // --------------------------------------------------------------------
 
-// ------- 贊助連結:之後把你的贊助頁面網址填在這裡(例如 Buy Me a Coffee / Ko-fi / PayPal.me) -------
-const DONATE_URL = "https://p.ecpay.com.tw/7DE7DBE"; // 例如 "https://buymeacoffee.com/yourname"
+// ------- 贊助連結:中文版用綠界,英文版用 Buy Me a Coffee(申請好之後把網址填在這裡) -------
+const DONATE_URL_ZH = "https://p.ecpay.com.tw/7DE7DBE";
+const DONATE_URL_EN = "https://buymeacoffee.com/hsuhyanzio";
 // --------------------------------------------------------------------
 
 const ANIMALS = [
@@ -379,6 +385,113 @@ const ANIMALS = [
   {zh:"大羚羊", en:"Eland", img:"images/eland.jpg"},
   {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg"}
 ];
+
+const I18N = {
+  zh: {
+    title: "非洲遊獵動物賓果卡",
+    rule: "點一下格子格子外圍會有紅框,長按格子可以上傳或移除照片,率先完成任意 2 條線(橫、直、斜皆可)算獲勝!",
+    nameLabel: "姓名",
+    dateLabel: "日期",
+    namePlaceholder: "輸入你的名字",
+    menuUpload: "📷 上傳照片",
+    menuRemove: "✕ 移除照片",
+    btnRegenerate: "🔀 重新產生",
+    btnShare: "📸 分享 / 下載圖片",
+    btnInvite: "👥 邀請朋友一起玩",
+    btnDonate: "☕ 贊助我一杯飲料",
+    footerLabel: "聯絡信箱:",
+    winTitle: "🎉 BINGO! 🎉",
+    winSub: "恭喜你連成兩條線了!",
+    winDonateMsg: "如果這個賓果有為你的 Safari 之旅增添樂趣,歡迎按右下角隨意 donate!祝大家順利集滿非洲五霸!",
+    winClose: "關閉",
+    toggleLabel: "EN",
+    statusPhotoProcessing: "照片處理中...",
+    statusPhotoFailed: "照片處理失敗,請重試",
+    statusSaveFailed: "儲存失敗,可能是照片太多超過瀏覽器容量",
+    statusImgGenerating: "圖片產生中...",
+    statusShareOpened: "已開啟分享選單",
+    statusImgDownloaded: "圖片已下載,可到相簿手動分享到 LINE",
+    statusImgFailed: "產生圖片失敗,請重試",
+    statusNoShareTarget: "此環境不支援 LINE 分享選單,請直接複製連結傳送",
+    statusInviteSent: "已送出邀請",
+    statusInviteFailed: "邀請取消或失敗",
+    statusNoDonateUrl: "尚未設定贊助連結",
+    statusNoLiffId: "尚未設定 LIFF ID,目前為本機測試模式",
+    statusLiffFailed: "LIFF 初始化失敗,已切換為手動輸入模式",
+    defaultShareName: "我",
+    shareText: (name)=> `${name} 的專屬 Safari 賓果卡`,
+    inviteText: (url)=> `🦁 一起來玩 African Safari Animal Bingo!\n打開連結產生你的專屬動物賓果卡:\n${url}`
+  },
+  en: {
+    title: "African Safari Animal Bingo",
+    rule: "Tap a cell to check it off — the border turns red. Long-press a cell to upload or remove a photo. First to complete 2 lines (row, column, or diagonal) wins!",
+    nameLabel: "NAME",
+    dateLabel: "DATE",
+    namePlaceholder: "Enter your name",
+    menuUpload: "📷 Upload",
+    menuRemove: "✕ Remove",
+    btnRegenerate: "🔀 New Card",
+    btnShare: "📸 Share / Save Image",
+    btnInvite: "👥 Invite Friends",
+    btnDonate: "☕ Buy Me a Coffee",
+    footerLabel: "Contact us: ",
+    winTitle: "🎉 BINGO! 🎉",
+    winSub: "You've completed two lines!",
+    winDonateMsg: "If this bingo card added some fun to your Safari trip, feel free to donate in the bottom right. Good luck spotting the Big Five!",
+    winClose: "Close",
+    toggleLabel: "中",
+    statusPhotoProcessing: "Processing photo...",
+    statusPhotoFailed: "Failed to process photo, please try again",
+    statusSaveFailed: "Save failed — maybe too many photos for browser storage",
+    statusImgGenerating: "Generating image...",
+    statusShareOpened: "Share menu opened",
+    statusImgDownloaded: "Image downloaded — you can share it to LINE from your photo album",
+    statusImgFailed: "Failed to generate image, please try again",
+    statusNoShareTarget: "Share menu not supported here — please copy the link instead",
+    statusInviteSent: "Invitation sent",
+    statusInviteFailed: "Invitation cancelled or failed",
+    statusNoDonateUrl: "Donation link not set up yet",
+    statusNoLiffId: "LIFF ID not set — running in local test mode",
+    statusLiffFailed: "LIFF setup failed — switched to manual name entry",
+    defaultShareName: "My",
+    shareText: (name)=> `${name}'s African Safari Bingo Card`,
+    inviteText: (url)=> `🦁 Come play African Safari Animal Bingo!\nOpen the link to make your own bingo card:\n${url}`
+  }
+};
+
+const LANG_KEY = "safariBingoLang";
+let currentLang = localStorage.getItem(LANG_KEY) === "en" ? "en" : "zh";
+
+function t(key){ return I18N[currentLang][key]; }
+
+function applyLang(){
+  document.documentElement.lang = currentLang === "en" ? "en" : "zh-Hant";
+  document.getElementById("mainTitle").textContent = t("title");
+  document.getElementById("ruleText").textContent = t("rule");
+  document.getElementById("nameLabel").textContent = t("nameLabel");
+  document.getElementById("dateLabel").textContent = t("dateLabel");
+  nameInput.placeholder = t("namePlaceholder");
+  document.getElementById("btnRegenerate").textContent = t("btnRegenerate");
+  document.getElementById("btnShare").textContent = t("btnShare");
+  document.getElementById("btnInvite").textContent = t("btnInvite");
+  document.getElementById("btnDonate").textContent = t("btnDonate");
+  document.getElementById("footerLabel").textContent = t("footerLabel");
+  document.getElementById("winTitle").textContent = t("winTitle");
+  document.getElementById("winSub").textContent = t("winSub");
+  document.getElementById("winDonateMsg").textContent = t("winDonateMsg");
+  document.getElementById("winClose").textContent = t("winClose");
+  document.getElementById("langToggle").textContent = t("toggleLabel");
+  document.querySelectorAll(".cell").forEach(cell=>{
+    const nameEl = cell.querySelector(".name");
+    if(nameEl) nameEl.textContent = currentLang === "en" ? cell.dataset.en : cell.dataset.zh;
+  });
+}
+
+document.getElementById("langToggle").addEventListener("click", ()=>{
+  currentLang = currentLang === "zh" ? "en" : "zh";
+  localStorage.setItem(LANG_KEY, currentLang);
+  applyLang();
+});
 
 const STORAGE_KEY = "safariBingoState_v1";
 
@@ -470,7 +583,7 @@ function saveState(){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }catch(e){
     console.warn("save failed", e);
-    setStatus("儲存失敗,可能是照片太多超過瀏覽器容量");
+    setStatus(t("statusSaveFailed"));
   }
 }
 
@@ -503,8 +616,8 @@ function showCellMenu(cell){
   const menu = document.createElement("div");
   menu.className = "cell-menu";
   menu.innerHTML = `
-    <button type="button" class="menu-btn menu-upload">📷 上傳照片</button>
-    ${hasPhoto ? '<button type="button" class="menu-btn menu-remove">✕ 移除照片</button>' : ""}
+    <button type="button" class="menu-btn menu-upload">${t("menuUpload")}</button>
+    ${hasPhoto ? `<button type="button" class="menu-btn menu-remove">${t("menuRemove")}</button>` : ""}
   `;
   cell.appendChild(menu);
   menu.querySelector(".menu-upload").addEventListener("click", (e)=>{
@@ -537,8 +650,7 @@ function buildCell(a){
   cell.innerHTML = `
     ${a.img ? `<img class="animal-img" src="${a.img}" alt="${a.zh}">` : `<div class="icon">${a.icon}</div>`}
     <div class="label">
-      <div class="zh">${a.zh}</div>
-      <div class="en">${a.en}</div>
+      <div class="name">${currentLang === "en" ? a.en : a.zh}</div>
     </div>
   `;
   if(a.img) cell.classList.add("has-img");
@@ -601,7 +713,7 @@ photoInput.addEventListener("change", async (e)=>{
   const file = e.target.files[0];
   photoInput.value = "";
   if(!file || !currentUploadCell) return;
-  setStatus("照片處理中...");
+  setStatus(t("statusPhotoProcessing"));
   try{
     const dataUrl = await resizeImageFile(file);
     const cell = currentUploadCell;
@@ -618,7 +730,7 @@ photoInput.addEventListener("change", async (e)=>{
     checkWin();
   }catch(err){
     console.error(err);
-    setStatus("照片處理失敗,請重試");
+    setStatus(t("statusPhotoFailed"));
   }
 });
 
@@ -632,7 +744,7 @@ nameInput.addEventListener("input", saveState);
 document.getElementById("btnRegenerate").addEventListener("click", ()=> renderGrid(true));
 
 document.getElementById("btnShare").addEventListener("click", async ()=>{
-  setStatus("圖片產生中...");
+  setStatus(t("statusImgGenerating"));
   try{
     const canvas = await html2canvas(document.getElementById("captureCard"), {
       backgroundColor:"#f7f2e6",
@@ -645,9 +757,9 @@ document.getElementById("btnShare").addEventListener("click", async ()=>{
           await navigator.share({
             files:[file],
             title:"African Safari Animal Bingo",
-            text:`${nameInput.value || "我"} 的專屬 Safari 賓果卡`
+            text: t("shareText")(nameInput.value || t("defaultShareName"))
           });
-          setStatus("已開啟分享選單");
+          setStatus(t("statusShareOpened"));
           return;
         }catch(e){ /* 使用者取消分享,改走下載 */ }
       }
@@ -659,54 +771,56 @@ document.getElementById("btnShare").addEventListener("click", async ()=>{
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      setStatus("圖片已下載,可到相簿手動分享到 LINE");
+      setStatus(t("statusImgDownloaded"));
     }, "image/png");
   }catch(e){
     console.error(e);
-    setStatus("產生圖片失敗,請重試");
+    setStatus(t("statusImgFailed"));
   }
 });
 
 document.getElementById("btnInvite").addEventListener("click", async ()=>{
   if(typeof liff === "undefined" || !liff.isApiAvailable || !liff.isApiAvailable("shareTargetPicker")){
-    setStatus("此環境不支援 LINE 分享選單,請直接複製連結傳送");
+    setStatus(t("statusNoShareTarget"));
     return;
   }
   try{
     await liff.shareTargetPicker([
       {
         type:"text",
-        text:`🦁 一起來玩Ａfrican Animal Safari Bingo!\n打開連結產生你的專屬動物賓果卡:\n${location.href}`
+        text: t("inviteText")(location.href)
       }
     ]);
-    setStatus("已送出邀請");
+    setStatus(t("statusInviteSent"));
   }catch(e){
     console.error(e);
-    setStatus("邀請取消或失敗");
+    setStatus(t("statusInviteFailed"));
   }
 });
 
 document.getElementById("btnDonate").addEventListener("click", ()=>{
-  if(!DONATE_URL){
-    setStatus("尚未設定贊助連結");
+  const donateUrl = currentLang === "en" ? DONATE_URL_EN : DONATE_URL_ZH;
+  if(!donateUrl){
+    setStatus(t("statusNoDonateUrl"));
     return;
   }
   if(typeof liff !== "undefined" && liff.isInClient && liff.isInClient()){
-    liff.openWindow({ url: DONATE_URL, external: true });
+    liff.openWindow({ url: donateUrl, external: true });
   }else{
-    window.open(DONATE_URL, "_blank");
+    window.open(donateUrl, "_blank");
   }
 });
 
 async function initLiff(){
+  applyLang();
   const restored = renderGrid();
   if(!restored){
     nameInput.value = "";
-    nameInput.placeholder = "輸入你的名字";
   }
+  nameInput.placeholder = t("namePlaceholder");
 
   if(LIFF_ID === "YOUR_LIFF_ID_HERE"){
-    setStatus("尚未設定 LIFF ID,目前為本機測試模式");
+    setStatus(t("statusNoLiffId"));
     return;
   }
   try{
@@ -722,7 +836,7 @@ async function initLiff(){
     }
   }catch(e){
     console.error(e);
-    setStatus("LIFF 初始化失敗,已切換為手動輸入模式");
+    setStatus(t("statusLiffFailed"));
   }
 }
 
