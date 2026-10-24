@@ -49,16 +49,6 @@
     border-radius:12px;
     pointer-events:none;
   }
-  .corner{
-    position:absolute;
-    width:26px;height:26px;
-    border:2px solid var(--gold);
-  }
-  .corner.tl{top:2px;left:2px;border-right:none;border-bottom:none;border-radius:10px 0 0 0;}
-  .corner.tr{top:2px;right:2px;border-left:none;border-bottom:none;border-radius:0 10px 0 0;}
-  .corner.bl{bottom:2px;left:2px;border-right:none;border-top:none;border-radius:0 0 0 10px;}
-  .corner.br{bottom:2px;right:2px;border-left:none;border-top:none;border-radius:0 0 10px 0;}
-
   header{text-align:center;margin-bottom:10px;}
   h1{
     font-family:"Noto Serif TC",serif;
@@ -237,17 +227,6 @@
     max-width:480px;
   }
 
-  .site-footer{
-    text-align:center;
-    font-size:0.7rem;
-    color:#9a8f78;
-    margin-top:20px;
-    padding-top:12px;
-    border-top:1px dashed var(--gold-soft);
-    width:100%;
-    max-width:480px;
-  }
-
   .win-overlay{
     position:fixed;
     inset:0;
@@ -303,8 +282,6 @@
 <body>
 
 <div class="card" id="captureCard">
-  <div class="corner tl"></div><div class="corner tr"></div>
-  <div class="corner bl"></div><div class="corner br"></div>
   <button type="button" class="lang-toggle" id="langToggle">EN</button>
 
   <header>
@@ -336,8 +313,6 @@
   <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
 </div>
 <p class="status" id="status"></p>
-
-<footer class="site-footer"><span id="footerLabel">聯絡信箱:</span>hsuhuiyen@gmail.com</footer>
 
 <div class="win-overlay" id="winOverlay" hidden>
   <div class="win-modal">
@@ -399,7 +374,6 @@ const I18N = {
     btnShare: "📸 分享 / 下載圖片",
     btnInvite: "👥 邀請朋友一起玩",
     btnDonate: "☕ 贊助我一杯飲料",
-    footerLabel: "聯絡信箱:",
     winTitle: "🎉 BINGO! 🎉",
     winSub: "恭喜你連成兩條線了!",
     winDonateMsg: "如果這個賓果有為你的 Safari 之旅增添樂趣,歡迎按右下角隨意 donate!祝大家順利集滿非洲五霸!",
@@ -434,7 +408,6 @@ const I18N = {
     btnShare: "📸 Share / Save Image",
     btnInvite: "👥 Invite Friends",
     btnDonate: "☕ Buy Me a Coffee",
-    footerLabel: "Contact us: ",
     winTitle: "🎉 BINGO! 🎉",
     winSub: "You've completed two lines!",
     winDonateMsg: "If this bingo card added some fun to your Safari trip, feel free to donate in the bottom right. Good luck spotting the Big Five!",
@@ -475,7 +448,6 @@ function applyLang(){
   document.getElementById("btnShare").textContent = t("btnShare");
   document.getElementById("btnInvite").textContent = t("btnInvite");
   document.getElementById("btnDonate").textContent = t("btnDonate");
-  document.getElementById("footerLabel").textContent = t("footerLabel");
   document.getElementById("winTitle").textContent = t("winTitle");
   document.getElementById("winSub").textContent = t("winSub");
   document.getElementById("winDonateMsg").textContent = t("winDonateMsg");
