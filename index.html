@@ -269,7 +269,28 @@
     color:#fff;
   }
 
-  .guide-card{padding:52px 16px 22px;}
+  .guide-card{
+    padding:52px 16px 18px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  #guidePicker,
+  #guideDetail{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    flex:1 1 auto;
+    min-height:0;
+    padding-right:2px;
+  }
+  /* kept in the layout (so its height stays measurable) but out of sight */
+  .off{
+    position:absolute;
+    left:-99999px;
+    top:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
   .guide-hint{
     text-align:center;
     font-size:0.76rem;
@@ -316,58 +337,203 @@
     color:var(--gold);
   }
 
+  /* ---- field guide detail ---- */
+  #guideDetail{touch-action:pan-y;overflow-x:hidden;}
+  .dt-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
+  }
   .dt-back{
-    border:1px solid var(--gold);
-    background:transparent;
+    border:1px solid var(--gold-soft);
+    background:rgba(255,253,248,0.9);
     color:var(--olive);
     font-family:inherit;
-    font-size:0.76rem;
+    font-size:0.74rem;
     font-weight:700;
-    padding:6px 16px;
+    padding:6px 14px;
     border-radius:20px;
     cursor:pointer;
-    margin-bottom:14px;
+    transition:background .18s ease, border-color .18s ease;
+  }
+  .dt-back:hover{border-color:var(--gold);}
+  .dt-back:active{transform:scale(0.97);}
+  .dt-count{
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:1.5px;
+    color:#a99a80;
+  }
+
+  .dt-inner{will-change:transform;}
+
+  .dt-hero-wrap{
+    position:relative;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 22px rgba(60,45,10,0.16);
   }
   .dt-hero{
     width:100%;
     aspect-ratio:4/3;
     object-fit:cover;
-    border-radius:10px;
-    border:1px solid var(--gold-soft);
     display:block;
+  }
+  .dt-hero-scrim{
+    position:absolute;
+    inset:auto 0 0 0;
+    padding:34px 16px 14px;
+    background:linear-gradient(to top, rgba(26,20,12,0.82) 0%, rgba(26,20,12,0.45) 45%, rgba(26,20,12,0) 100%);
+    color:#fff;
   }
   .dt-name{
     font-family:"Noto Serif TC",serif;
-    font-size:1.4rem;
+    font-size:1.55rem;
     font-weight:700;
-    color:var(--olive);
-    margin-top:12px;
+    line-height:1.15;
+    letter-spacing:0.5px;
   }
-  .dt-en{font-size:0.9rem;color:var(--ink);}
-  .dt-sci{font-size:0.74rem;color:#9a8f78;font-style:italic;margin-top:2px;}
+  .dt-meta{
+    font-size:0.76rem;
+    opacity:0.88;
+    margin-top:3px;
+  }
+  .dt-sci{font-style:italic;}
   .dt-tag{
-    display:inline-block;
-    margin-top:8px;
-    font-size:0.64rem;
+    position:absolute;
+    top:12px;
+    left:12px;
+    font-size:0.6rem;
     font-weight:700;
-    letter-spacing:1px;
-    color:#fff;
-    background:var(--gold);
-    border-radius:12px;
-    padding:3px 11px;
+    letter-spacing:1.2px;
+    color:var(--ink);
+    background:rgba(255,253,248,0.94);
+    border-radius:20px;
+    padding:4px 11px;
   }
-  .dt-sec{margin-top:16px;}
+
+  .dt-sec{
+    margin-top:20px;
+    padding-top:16px;
+    border-top:1px solid rgba(216,195,145,0.5);
+  }
+  .dt-sec:first-of-type{border-top:none;padding-top:4px;}
   .dt-label{
-    font-size:0.7rem;
+    font-size:0.66rem;
     font-weight:700;
-    letter-spacing:1px;
+    letter-spacing:2px;
     color:var(--gold);
-    margin-bottom:4px;
+    margin-bottom:6px;
   }
   .dt-text{
-    font-size:0.82rem;
+    font-size:0.84rem;
     color:#5f564a;
-    line-height:1.7;
+    line-height:1.85;
+  }
+
+  .dt-nav{
+    display:flex;
+    gap:8px;
+    margin-top:24px;
+    padding-top:16px;
+    border-top:1px solid rgba(216,195,145,0.5);
+  }
+  .dt-nav button{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    border:1px solid var(--gold-soft);
+    background:rgba(255,253,248,0.75);
+    border-radius:11px;
+    padding:9px 12px;
+    cursor:pointer;
+    font-family:inherit;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .dt-nav button:hover{border-color:var(--gold);background:#fffdf8;}
+  .dt-nav button:active{transform:scale(0.98);}
+  .dt-nav button[disabled]{opacity:0.35;cursor:default;}
+  .dt-nav .nv-dir{
+    font-size:0.6rem;
+    letter-spacing:1.5px;
+    color:var(--gold);
+    font-weight:700;
+  }
+  .dt-nav .nv-name{
+    font-size:0.8rem;
+    font-weight:700;
+    color:var(--olive);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .dt-nav .nv-next{text-align:right;}
+
+  .dt-hint{
+    text-align:center;
+    font-size:0.66rem;
+    color:#b0a58e;
+    margin-top:10px;
+  }
+
+  @keyframes dtInLeft{from{opacity:0;transform:translateX(26px);}to{opacity:1;transform:none;}}
+  @keyframes dtInRight{from{opacity:0;transform:translateX(-26px);}to{opacity:1;transform:none;}}
+  .dt-anim-left{animation:dtInLeft .26s cubic-bezier(.22,.7,.3,1);}
+  .dt-anim-right{animation:dtInRight .26s cubic-bezier(.22,.7,.3,1);}
+
+  @media (prefers-reduced-motion: reduce){
+    .dt-anim-left,.dt-anim-right{animation:none;}
+    *{transition-duration:0.01ms !important;}
+  }
+
+  /* ---- polish pass ---- */
+  #guidePicker::-webkit-scrollbar,
+  #guideDetail::-webkit-scrollbar{width:7px;}
+  #guidePicker::-webkit-scrollbar-track,
+  #guideDetail::-webkit-scrollbar-track{background:transparent;}
+  #guidePicker::-webkit-scrollbar-thumb,
+  #guideDetail::-webkit-scrollbar-thumb{
+    background:rgba(169,134,58,0.3);
+    border-radius:4px;
+  }
+  #guidePicker::-webkit-scrollbar-thumb:hover,
+  #guideDetail::-webkit-scrollbar-thumb:hover{background:rgba(169,134,58,0.5);}
+  #guidePicker,#guideDetail{scrollbar-width:thin;scrollbar-color:rgba(169,134,58,0.35) transparent;}
+
+  @keyframes viewIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .view-in{animation:viewIn .3s cubic-bezier(.22,.7,.3,1);}
+
+  .pick{
+    transition:transform .2s cubic-bezier(.22,.7,.3,1), box-shadow .2s ease, border-color .2s ease;
+  }
+  .pick img{transition:transform .35s cubic-bezier(.22,.7,.3,1);}
+  @media (hover:hover){
+    .pick:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 18px rgba(60,45,10,0.14);
+      border-color:var(--gold);
+    }
+    .pick:hover img{transform:scale(1.06);}
+  }
+  .pick:active{transform:translateY(0) scale(0.97);}
+
+  img{opacity:1;}
+  .fade-img{animation:imgIn .45s ease;}
+  @keyframes imgIn{from{opacity:0;}to{opacity:1;}}
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:2px;
+    border-radius:6px;
+  }
+  .vtab:focus-visible,.lang-toggle:focus-visible{outline-offset:1px;}
+
+  .guide-hint{
+    letter-spacing:0.5px;
   }
 
   .win-overlay{
@@ -465,7 +631,7 @@
 </div>
 <p class="status" id="status"></p>
 
-<div class="card guide-card" id="guideView" hidden>
+<div class="card guide-card off" id="guideView">
   <div id="guidePicker">
     <p class="guide-hint" id="guideHint">點選動物看詳細介紹</p>
     <div class="pick-grid" id="pickGrid"></div>
@@ -792,6 +958,9 @@ const I18N = {
     tabGuide: "動物圖鑑",
     guideHint: "點選動物看詳細介紹",
     back: "← 返回列表",
+    prev: "上一個",
+    next: "下一個",
+    swipeHint: "左右滑動可切換動物",
     tagBig: "BIG FIVE 五霸",
     tagUgly: "UGLY FIVE 五醜",
     secId: "辨認重點",
@@ -836,6 +1005,9 @@ const I18N = {
     tabGuide: "Field Guide",
     guideHint: "Tap an animal for the full entry",
     back: "← Back to list",
+    prev: "PREV",
+    next: "NEXT",
+    swipeHint: "Swipe left or right to browse",
     tagBig: "BIG FIVE",
     tagUgly: "UGLY FIVE",
     secId: "How to tell",
@@ -891,7 +1063,7 @@ function applyLang(){
   document.getElementById("tabGuide").textContent = t("tabGuide");
   document.getElementById("guideHint").textContent = t("guideHint");
   buildPicker();
-  if(!guideDetail.hidden && currentDetail) showDetail(currentDetail);
+  if(!guideDetail.hidden && detailIndex >= 0) showDetailAt(detailIndex, 0);
   document.querySelectorAll(".cell").forEach(cell=>{
     const nameEl = cell.querySelector(".name");
     if(nameEl) nameEl.textContent = currentLang === "en" ? cell.dataset.en : cell.dataset.zh;
@@ -942,6 +1114,7 @@ const pickGrid = document.getElementById("pickGrid");
 const bingoCard = document.getElementById("captureCard");
 const actionsBar = document.querySelector(".actions");
 let currentDetail = null;
+let detailIndex = -1;
 
 function esc(s){
   return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -965,39 +1138,127 @@ function buildPicker(){
   }).join("");
 }
 
-function showDetail(animal){
-  currentDetail = animal;
+function detailMarkup(animal, i){
   const d = DETAILS[animal.en];
   const copy = d ? (currentLang === "en" ? d.en : d.zh) : null;
   const name = currentLang === "en" ? animal.en : animal.zh;
   const alt = currentLang === "en" ? animal.zh : animal.en;
   const tag = groupTag(animal.group);
   const sections = copy ? [["secId", copy.id], ["secHab", copy.hab],
-                           ["secSpot", copy.spot], ["secFact", copy.fact]] : [];
+                          ["secSpot", copy.spot], ["secFact", copy.fact]] : [];
+  const prev = ANIMALS[i - 1], next = ANIMALS[i + 1];
+  const label = a => a ? esc(currentLang === "en" ? a.en : a.zh) : "";
 
-  guideDetail.innerHTML = `
-    <button type="button" class="dt-back" id="dtBack">${esc(t("back"))}</button>
-    <img class="dt-hero" src="${esc(animal.img)}" alt="${esc(name)}">
-    <div class="dt-name">${esc(name)}</div>
-    <div class="dt-en">${esc(alt)}</div>
-    ${d ? `<div class="dt-sci">${esc(d.sci)}</div>` : ""}
-    ${tag ? `<span class="dt-tag">${esc(tag)}</span>` : ""}
-    ${sections.map(([k, v]) => `<div class="dt-sec">
-        <div class="dt-label">${esc(t(k))}</div>
-        <div class="dt-text">${esc(v)}</div>
-      </div>`).join("")}
+  return `
+    <div class="dt-bar">
+      <button type="button" class="dt-back" id="dtBack">${esc(t("back"))}</button>
+      <span class="dt-count">${i + 1} / ${ANIMALS.length}</span>
+    </div>
+    <div class="dt-inner" id="dtInner">
+      <div class="dt-hero-wrap">
+        <img class="dt-hero fade-img" src="${esc(animal.img)}" alt="${esc(name)}">
+        ${tag ? `<span class="dt-tag">${esc(tag)}</span>` : ""}
+        <div class="dt-hero-scrim">
+          <div class="dt-name">${esc(name)}</div>
+          <div class="dt-meta">${esc(alt)}${d ? ` · <span class="dt-sci">${esc(d.sci)}</span>` : ""}</div>
+        </div>
+      </div>
+      ${sections.map(([k, v]) => `<div class="dt-sec">
+          <div class="dt-label">${esc(t(k))}</div>
+          <div class="dt-text">${esc(v)}</div>
+        </div>`).join("")}
+      <div class="dt-nav">
+        <button type="button" id="dtPrev" ${prev ? "" : "disabled"}>
+          <span class="nv-dir">‹ ${esc(t("prev"))}</span>
+          <span class="nv-name">${label(prev) || "—"}</span>
+        </button>
+        <button type="button" id="dtNext" class="nv-next" ${next ? "" : "disabled"}>
+          <span class="nv-dir">${esc(t("next"))} ›</span>
+          <span class="nv-name">${label(next) || "—"}</span>
+        </button>
+      </div>
+      <p class="dt-hint">${esc(t("swipeHint"))}</p>
+    </div>
   `;
+}
+
+function showDetailAt(i, dir){
+  if(i < 0 || i >= ANIMALS.length) return;
+  detailIndex = i;
+  currentDetail = ANIMALS[i];
+  guideDetail.innerHTML = detailMarkup(ANIMALS[i], i);
+
+  const inner = guideDetail.querySelector("#dtInner");
+  if(dir) inner.classList.add(dir > 0 ? "dt-anim-left" : "dt-anim-right");
+
   guideDetail.querySelector("#dtBack").addEventListener("click", showPicker);
+  guideDetail.querySelector("#dtPrev").addEventListener("click", ()=> showDetailAt(i - 1, -1));
+  guideDetail.querySelector("#dtNext").addEventListener("click", ()=> showDetailAt(i + 1, 1));
+
   guidePicker.hidden = true;
   guideDetail.hidden = false;
-  window.scrollTo(0, 0);
+  guideDetail.scrollTop = 0;
 }
+
+function showDetail(animal){
+  showDetailAt(ANIMALS.indexOf(animal), 0);
+}
+
+// ---- swipe between animals ----
+(function(){
+  let sx = 0, sy = 0, dragging = false, axis = null, inner = null;
+
+  guideDetail.addEventListener("pointerdown", (e)=>{
+    if(guideDetail.hidden || (e.pointerType === "mouse" && e.button !== 0)) return;
+    inner = guideDetail.querySelector("#dtInner");
+    if(!inner) return;
+    sx = e.clientX; sy = e.clientY; dragging = true; axis = null;
+    inner.style.transition = "none";
+  });
+
+  guideDetail.addEventListener("pointermove", (e)=>{
+    if(!dragging || !inner) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if(!axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)){
+      axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+    }
+    if(axis !== "x") return;
+    e.preventDefault();
+    const atEnd = (dx > 0 && detailIndex === 0) || (dx < 0 && detailIndex === ANIMALS.length - 1);
+    inner.style.transform = `translateX(${atEnd ? dx * 0.28 : dx}px)`;
+    inner.style.opacity = String(Math.max(0.45, 1 - Math.abs(dx) / 420));
+  });
+
+  function release(e){
+    if(!dragging || !inner) return;
+    const dx = (e.clientX || sx) - sx;
+    dragging = false;
+    const node = inner;
+    node.style.transition = "transform .22s ease, opacity .22s ease";
+    node.style.transform = "";
+    node.style.opacity = "";
+    if(axis === "x" && Math.abs(dx) > 55){
+      if(dx < 0) showDetailAt(detailIndex + 1, 1);
+      else showDetailAt(detailIndex - 1, -1);
+    }
+    axis = null; inner = null;
+  }
+  guideDetail.addEventListener("pointerup", release);
+  guideDetail.addEventListener("pointercancel", release);
+})();
+
+document.addEventListener("keydown", (e)=>{
+  if(guideDetail.hidden || guideView.classList.contains("off")) return;
+  if(e.key === "ArrowRight") showDetailAt(detailIndex + 1, 1);
+  else if(e.key === "ArrowLeft") showDetailAt(detailIndex - 1, -1);
+  else if(e.key === "Escape") showPicker();
+});
 
 function showPicker(){
   currentDetail = null;
   guideDetail.hidden = true;
   guidePicker.hidden = false;
-  window.scrollTo(0, 0);
+  guidePicker.scrollTop = 0;
 }
 
 pickGrid.addEventListener("click", (e)=>{
@@ -1005,12 +1266,24 @@ pickGrid.addEventListener("click", (e)=>{
   if(btn) showDetail(ANIMALS[Number(btn.dataset.i)]);
 });
 
+function syncGuideHeight(){
+  const h = bingoCard.offsetHeight;
+  if(h > 200) guideView.style.height = h + "px";
+}
+
+window.addEventListener("resize", syncGuideHeight);
+
 function showView(which){
   const guide = which === "guide";
-  bingoCard.hidden = guide;
+  syncGuideHeight();
+  bingoCard.classList.toggle("off", guide);
   actionsBar.hidden = guide;
   statusEl.hidden = guide;
-  guideView.hidden = !guide;
+  guideView.classList.toggle("off", !guide);
+  const shown = guide ? guideView : bingoCard;
+  shown.classList.remove("view-in");
+  void shown.offsetWidth;
+  shown.classList.add("view-in");
   document.getElementById("tabBingo").classList.toggle("active", !guide);
   document.getElementById("tabGuide").classList.toggle("active", guide);
   if(guide) showPicker();
