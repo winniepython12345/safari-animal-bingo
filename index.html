@@ -210,7 +210,7 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:8px;
-    margin-bottom:4px;
+    margin-top:16px;
     width:100%;
     max-width:480px;
   }
@@ -241,7 +241,7 @@
     text-align:center;
     font-size:0.72rem;
     color:#9a8f78;
-    margin:8px 0 12px;
+    margin:8px 0 0;
     min-height:1em;
     width:100%;
     max-width:480px;
@@ -594,15 +594,6 @@
 <body>
 
 <div class="stage">
-
-<div class="actions">
-  <button class="act" id="btnRegenerate">🔀 重新產生</button>
-  <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
-  <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
-  <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
-</div>
-<p class="status" id="status"></p>
-
 <div class="cardwrap">
 <div class="corner-ctrl">
   <div class="viewtabs">
@@ -632,6 +623,14 @@
   </div>
 
   <div class="grid" id="grid"></div>
+
+  <div class="actions no-capture">
+    <button class="act" id="btnRegenerate">🔀 重新產生</button>
+    <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
+    <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
+    <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
+  </div>
+  <p class="status no-capture" id="status"></p>
 </div>
 
 <div class="card guide-card off" id="guideView">
@@ -1513,26 +1512,15 @@ function setStatus(msg){
 
 nameInput.addEventListener("input", saveState);
 
-// The card actions live above both views, so make sure the bingo card is the
-// one on screen (and painted) before acting on it.
-function ensureBingoView(){
-  if(!bingoCard.classList.contains("off")) return Promise.resolve();
-  showView("bingo");
-  return new Promise(r=> requestAnimationFrame(()=> requestAnimationFrame(r)));
-}
-
-document.getElementById("btnRegenerate").addEventListener("click", async ()=>{
-  await ensureBingoView();
-  renderGrid(true);
-});
+document.getElementById("btnRegenerate").addEventListener("click", ()=> renderGrid(true));
 
 document.getElementById("btnShare").addEventListener("click", async ()=>{
-  await ensureBingoView();
   setStatus(t("statusImgGenerating"));
   try{
     const canvas = await html2canvas(document.getElementById("captureCard"), {
       backgroundColor:"#f7f2e6",
-      scale: 4
+      scale: 4,
+      ignoreElements: el => el.classList && el.classList.contains("no-capture")
     });
     canvas.toBlob(async (blob)=>{
       const file = new File([blob], "safari-bingo.png", {type:"image/png"});
