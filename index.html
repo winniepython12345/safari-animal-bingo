@@ -143,19 +143,26 @@
   .cell.has-img .name{font-size:0.5rem;color:#fff;}
   .cell .label{position:relative;z-index:2;}
 
+  .topbar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    width:100%;
+    max-width:480px;
+    margin-bottom:14px;
+  }
   .lang-toggle{
-    position:absolute;
-    top:14px;right:14px;
-    z-index:6;
+    flex:0 0 auto;
     border:1px solid var(--gold);
     background:transparent;
     color:var(--olive);
     font-size:0.7rem;
     font-weight:700;
-    padding:4px 10px;
-    border-radius:20px;
+    padding:10px 14px;
+    border-radius:22px;
     cursor:pointer;
     font-family:inherit;
+    background:rgba(255,253,248,0.75);
   }
   .lang-toggle:active{opacity:0.7;}
 
@@ -215,7 +222,7 @@
     background:transparent;
     color:var(--olive);
   }
-  button.act.wide{grid-column:1 / -1;}
+  .actions[hidden]{display:none;}
   button.act:active{opacity:0.8;}
 
   .status{
@@ -228,102 +235,134 @@
     max-width:480px;
   }
 
-  .guide-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(20,15,8,0.65);
-    z-index:120;
+  .viewtabs{
     display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px 12px;
-  }
-  .guide-overlay[hidden]{display:none;}
-  .guide-panel{
-    background:var(--cream);
-    border:2px solid var(--gold);
-    border-radius:16px;
+    gap:6px;
     width:100%;
     max-width:480px;
-    max-height:100%;
+    background:rgba(255,253,248,0.75);
+    border:1px solid var(--gold-soft);
+    border-radius:26px;
+    padding:5px;
+    flex:1;
+    min-width:0;
+  }
+  .vtab{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:var(--olive);
+    font-family:inherit;
+    font-size:0.85rem;
+    font-weight:700;
+    padding:9px 6px;
+    border-radius:22px;
+    cursor:pointer;
+  }
+  .vtab.active{
+    background:var(--olive);
+    color:#fff;
+  }
+
+  .guide-card{padding:18px 16px 22px;}
+  .guide-hint{
+    text-align:center;
+    font-size:0.76rem;
+    color:#9a8f78;
+    margin:0 0 14px;
+  }
+  .pick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+  }
+  .pick{
+    border:1px solid var(--gold-soft);
+    border-radius:9px;
+    background:#fffdf8;
+    padding:0 0 6px;
+    cursor:pointer;
+    overflow:hidden;
+    text-align:center;
+    font-family:inherit;
     display:flex;
     flex-direction:column;
-    overflow:hidden;
-    box-shadow:0 12px 40px rgba(0,0,0,0.35);
+    gap:5px;
   }
-  .guide-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:14px 16px;
-    border-bottom:1px solid var(--gold-soft);
-    background:var(--cream);
+  .pick:active{opacity:0.75;}
+  .pick img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    display:block;
   }
-  .guide-head h2{
-    margin:0;
-    font-family:"Noto Serif TC",serif;
-    font-size:1.15rem;
-    color:var(--olive);
+  .pick .pn{
+    font-size:0.7rem;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.2;
+    padding:0 3px;
+    word-break:break-word;
   }
-  .guide-close{
+  .pick .tag{
+    font-size:0.56rem;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--gold);
+  }
+
+  .dt-back{
     border:1px solid var(--gold);
     background:transparent;
     color:var(--olive);
     font-family:inherit;
-    font-size:0.78rem;
+    font-size:0.76rem;
     font-weight:700;
-    padding:6px 14px;
+    padding:6px 16px;
     border-radius:20px;
     cursor:pointer;
-    flex:0 0 auto;
+    margin-bottom:14px;
   }
-  .guide-close:active{opacity:0.7;}
-  .guide-body{
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-    padding:4px 16px 20px;
-  }
-  .guide-sec{
-    font-size:0.78rem;
-    font-weight:700;
-    color:var(--gold);
-    letter-spacing:1px;
-    margin:18px 0 8px;
-    padding-bottom:5px;
-    border-bottom:1px dashed var(--gold-soft);
-  }
-  .guide-item{
-    display:flex;
-    gap:12px;
-    padding:11px 0;
-    border-bottom:1px solid rgba(216,195,145,0.4);
-  }
-  .guide-item:last-child{border-bottom:none;}
-  .guide-thumb{
-    width:76px;
-    height:76px;
-    flex:0 0 76px;
+  .dt-hero{
+    width:100%;
+    aspect-ratio:4/3;
     object-fit:cover;
-    border-radius:8px;
+    border-radius:10px;
     border:1px solid var(--gold-soft);
+    display:block;
   }
-  .guide-text{min-width:0;}
-  .guide-name{
-    font-size:0.92rem;
+  .dt-name{
+    font-family:"Noto Serif TC",serif;
+    font-size:1.4rem;
     font-weight:700;
-    color:var(--ink);
-    line-height:1.25;
+    color:var(--olive);
+    margin-top:12px;
   }
-  .guide-en{
-    font-size:0.72rem;
+  .dt-en{font-size:0.9rem;color:var(--ink);}
+  .dt-sci{font-size:0.74rem;color:#9a8f78;font-style:italic;margin-top:2px;}
+  .dt-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-size:0.64rem;
+    font-weight:700;
+    letter-spacing:1px;
+    color:#fff;
+    background:var(--gold);
+    border-radius:12px;
+    padding:3px 11px;
+  }
+  .dt-sec{margin-top:16px;}
+  .dt-label{
+    font-size:0.7rem;
+    font-weight:700;
+    letter-spacing:1px;
     color:var(--gold);
     margin-bottom:4px;
   }
-  .guide-desc{
-    font-size:0.76rem;
-    color:#7a6f5c;
-    line-height:1.55;
+  .dt-text{
+    font-size:0.82rem;
+    color:#5f564a;
+    line-height:1.7;
   }
 
   .win-overlay{
@@ -380,8 +419,15 @@
 </head>
 <body>
 
-<div class="card" id="captureCard">
+<div class="topbar">
+  <div class="viewtabs">
+    <button type="button" class="vtab active" id="tabBingo">賓果卡</button>
+    <button type="button" class="vtab" id="tabGuide">動物圖鑑</button>
+  </div>
   <button type="button" class="lang-toggle" id="langToggle">EN</button>
+</div>
+
+<div class="card" id="captureCard">
 
   <header>
     <h1 id="mainTitle">非洲遊獵動物賓果卡</h1>
@@ -410,18 +456,15 @@
   <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
   <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
   <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
-  <button class="act secondary wide" id="btnGuide">📖 動物圖鑑</button>
 </div>
 <p class="status" id="status"></p>
 
-<div class="guide-overlay" id="guideOverlay" hidden>
-  <div class="guide-panel">
-    <div class="guide-head">
-      <h2 id="guideTitle">動物圖鑑</h2>
-      <button type="button" class="guide-close" id="guideClose">關閉</button>
-    </div>
-    <div class="guide-body" id="guideBody"></div>
+<div class="card guide-card" id="guideView" hidden>
+  <div id="guidePicker">
+    <p class="guide-hint" id="guideHint">點選動物看詳細介紹</p>
+    <div class="pick-grid" id="pickGrid"></div>
   </div>
+  <div id="guideDetail" hidden></div>
 </div>
 
 <div class="win-overlay" id="winOverlay" hidden>
@@ -445,84 +488,285 @@ const DONATE_URL_EN = "https://buymeacoffee.com/hsuhyanzio";
 
 // group: big = Big Five, ugly = Ugly Five, other = 其他草原動物
 const ANIMALS = [
-  {zh:"獅子", en:"Lion", img:"images/lion.jpg", group:"big",
-   dZh:"非洲最大的貓科動物,以母獅為核心成群生活。清晨與黃昏最活躍,白天多半躺在樹蔭下睡覺。",
-   dEn:"Africa's largest cat, living in prides built around related females. Most active at dawn and dusk; usually asleep in the shade by midday."},
-  {zh:"花豹", en:"Leopard", img:"images/leopard.jpg", group:"big",
-   dZh:"獨來獨往、善於爬樹,常把獵物拖上樹獨自享用。夜行性,是五霸中最難遇到的一種。",
-   dEn:"Solitary and a superb climber, often hauling its kill up a tree. Nocturnal and the hardest of the Big Five to spot."},
-  {zh:"非洲象", en:"African Elephant", img:"images/elephant.jpg", group:"big",
-   dZh:"陸地上最大的動物,由年長母象帶領家族群行動。耳朵形狀像非洲大陸,是辨識重點。",
-   dEn:"The largest land animal, moving in family herds led by an old matriarch. Its ear is shaped rather like the African continent."},
-  {zh:"非洲水牛", en:"African Buffalo", img:"images/buffalo.jpg", group:"big",
-   dZh:"成群行動、記仇又難以預測,公認是五霸中最危險的一種。頭頂的角基部連成厚盾狀。",
-   dEn:"Herd animal with an unpredictable temper, widely considered the most dangerous of the Big Five. Its horn bases fuse into a heavy shield."},
-  {zh:"黑犀牛", en:"Black Rhino", img:"images/rhino.jpg", group:"big",
-   dZh:"上唇呈尖勾狀,用來勾取灌木枝葉(白犀牛則是方唇吃草)。數量稀少,屬極度瀕危物種。",
-   dEn:"Has a hooked upper lip for browsing on shrubs, unlike the square-lipped, grass-grazing white rhino. Critically endangered and rarely seen."},
-
-  {zh:"角馬", en:"Wildebeest", img:"images/wildebeest.jpg", group:"ugly",
-   dZh:"又叫牛羚。每年上百萬隻在賽倫蓋提與馬賽馬拉之間來回遷徙,是草原上最壯觀的場面。",
-   dEn:"Also called the gnu. Over a million cross between the Serengeti and the Masai Mara each year in the great migration."},
-  {zh:"疣豬", en:"Warthog", img:"images/warthog.jpg", group:"ugly",
-   dZh:"臉頰有疣狀突起,奔跑時尾巴直直豎起像天線。常跪著用前腳挖草根吃。",
-   dEn:"Named for the warty bumps on its face; runs with its tail straight up like an aerial. Often kneels on its front legs to dig up roots."},
-  {zh:"斑點鬣狗", en:"Spotted Hyena", img:"images/hyena.jpg", group:"ugly",
-   dZh:"母系社會,由體型較大的母鬣狗領導。叫聲像笑聲,其實是效率極高的獵食者,不只吃腐肉。",
-   dEn:"Lives in female-led clans and \"laughs\" when excited. Despite its scavenger reputation, it hunts most of what it eats."},
-  {zh:"禿鸛", en:"Marabou Stork", img:"images/stork.jpg", group:"ugly",
-   dZh:"身高可達 1.5 公尺,光禿的頭頸和垂掛的喉囊十分好認。常在屍體或垃圾場附近出現。",
-   dEn:"Stands up to 1.5 m tall with a bald head and a dangling throat pouch. Often found near carcasses or rubbish tips."},
-  {zh:"禿鷲", en:"Vulture", img:"images/vulture.jpg", group:"ugly",
-   dZh:"草原上的清道夫,靠敏銳視力尋找屍體。天空出現盤旋的禿鷲,通常代表附近有獵殺現場。",
-   dEn:"The savannah's clean-up crew, finding carcasses by sight. Circling vultures usually mean a kill somewhere below."},
-
-  {zh:"獵豹", en:"Cheetah", img:"images/cheetah.jpg", group:"other",
-   dZh:"陸上跑最快的動物,衝刺時速可超過 100 公里。眼睛下方的黑色淚痕是最好的辨識特徵。",
-   dEn:"The fastest land animal, sprinting at over 100 km/h. The black \"tear lines\" below its eyes are the giveaway."},
-  {zh:"長頸鹿", en:"Giraffe", img:"images/giraffe.jpg", group:"other",
-   dZh:"世界最高的動物,舌頭長達 45 公分,用來捲取滿是尖刺的金合歡樹葉。",
-   dEn:"The tallest animal on earth, with a 45 cm tongue for stripping leaves from thorny acacias."},
-  {zh:"平原斑馬", en:"Plains Zebra", img:"images/zebra.jpg", group:"other",
-   dZh:"每隻身上的條紋都獨一無二,像指紋一樣。常和角馬混群一起遷徙。",
-   dEn:"No two have the same stripe pattern — it works like a fingerprint. Often migrates alongside wildebeest."},
-  {zh:"河馬", en:"Hippopotamus", img:"images/hippo.jpg", group:"other",
-   dZh:"白天泡在水裡避暑,入夜才上岸吃草。領域性極強,是非洲最具攻擊性的大型動物之一。",
-   dEn:"Spends the day submerged to stay cool and grazes on land at night. Highly territorial and among Africa's most dangerous large animals."},
-  {zh:"尼羅鱷", en:"Nile Crocodile", img:"images/crocodile.jpg", group:"other",
-   dZh:"非洲最大的爬蟲類,可長到 5 公尺以上。遷徙季節常埋伏在渡河點等待角馬。",
-   dEn:"Africa's largest reptile, growing over 5 m. During the migration it waits in ambush at river crossings."},
-  {zh:"黑斑羚", en:"Impala", img:"images/impala.jpg", group:"other",
-   dZh:"草原上最常見的羚羊,臀部有 M 形黑紋。受驚時能一躍 3 公尺高、跳出 10 公尺遠。",
-   dEn:"The most common antelope here, marked with a black \"M\" on the rump. Leaps 3 m high and 10 m far when startled."},
-  {zh:"湯氏瞪羚", en:"Thomson's Gazelle", img:"images/gazelle.jpg", group:"other",
-   dZh:"體型嬌小,身側有一條粗黑橫帶。跑得快又靈活,是獵豹最主要的獵物。",
-   dEn:"Small and quick, with a bold black side stripe. The cheetah's single most important prey species."},
-  {zh:"大羚羊", en:"Eland", img:"images/eland.jpg", group:"other",
-   dZh:"世界上最大的羚羊,公羚體重可超過 900 公斤,卻仍能輕鬆跳過 2 公尺的障礙。",
-   dEn:"The world's largest antelope — bulls top 900 kg yet can still clear a 2 m fence."},
-  {zh:"轉角牛羚", en:"Topi", img:"images/topi.jpg", group:"other",
-   dZh:"毛色帶紫藍色光澤,常獨自站在蟻丘頂端瞭望,是草原上稱職的哨兵。",
-   dEn:"Has a purplish sheen to its coat and often stands sentry on top of a termite mound, scanning for danger."},
-  {zh:"黑背胡狼", en:"Black-backed Jackal", img:"images/jackal.jpg", group:"other",
-   dZh:"背上有明顯的黑色鞍狀斑。機會主義者,常跟在獅子或鬣狗後面撿拾剩餘的食物。",
-   dEn:"Named for the dark saddle on its back. An opportunist that shadows lions and hyenas to scavenge the leftovers."},
-  {zh:"綠猴", en:"Vervet Monkey", img:"images/monkey.jpg", group:"other",
-   dZh:"灰色身體配黑臉的小型猴,營地常客。動作極快,沒看好的食物常常被牠們偷走。",
-   dEn:"A small grey monkey with a black face and a regular visitor to camps — watch your food, they are fast."},
-  {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg", group:"other",
-   dZh:"群居且社會關係複雜,一群可達數十隻。雄性犬齒長而銳利,遇到威脅會集體驅趕。",
-   dEn:"Lives in large, socially complex troops. Males have long, sharp canines and will mob a predator together."},
-  {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg", group:"other",
-   dZh:"頭頂有一叢金色冠羽,求偶時會跳躍舞動。是烏干達的國鳥,也出現在該國國旗上。",
-   dEn:"Crowned with a spray of golden feathers and known for its leaping courtship dance. Uganda's national bird."},
-  {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg", group:"other",
-   dZh:"世界上最重的飛行鳥類之一,多半在地面緩步覓食。求偶時雄鳥會鼓起頸部羽毛展示。",
-   dEn:"One of the heaviest flying birds in the world, usually seen striding slowly across open ground. Males puff out the neck to display."},
-  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other",
-   dZh:"成千上萬聚集在東非的鹼水湖。粉紅色羽毛來自食物中藻類與小蝦的色素。",
-   dEn:"Gathers in vast flocks on East Africa's soda lakes. The pink comes from pigments in the algae and shrimp it filters out."}
+  {zh:"獅子", en:"Lion", img:"images/lion.jpg", group:"big"},
+  {zh:"花豹", en:"Leopard", img:"images/leopard.jpg", group:"big"},
+  {zh:"非洲象", en:"African Elephant", img:"images/elephant.jpg", group:"big"},
+  {zh:"非洲水牛", en:"African Buffalo", img:"images/buffalo.jpg", group:"big"},
+  {zh:"黑犀牛", en:"Black Rhino", img:"images/rhino.jpg", group:"big"},
+  {zh:"角馬", en:"Wildebeest", img:"images/wildebeest.jpg", group:"ugly"},
+  {zh:"疣豬", en:"Warthog", img:"images/warthog.jpg", group:"ugly"},
+  {zh:"斑點鬣狗", en:"Spotted Hyena", img:"images/hyena.jpg", group:"ugly"},
+  {zh:"禿鸛", en:"Marabou Stork", img:"images/stork.jpg", group:"ugly"},
+  {zh:"禿鷲", en:"Vulture", img:"images/vulture.jpg", group:"ugly"},
+  {zh:"獵豹", en:"Cheetah", img:"images/cheetah.jpg", group:"other"},
+  {zh:"長頸鹿", en:"Giraffe", img:"images/giraffe.jpg", group:"other"},
+  {zh:"平原斑馬", en:"Plains Zebra", img:"images/zebra.jpg", group:"other"},
+  {zh:"河馬", en:"Hippopotamus", img:"images/hippo.jpg", group:"other"},
+  {zh:"尼羅鱷", en:"Nile Crocodile", img:"images/crocodile.jpg", group:"other"},
+  {zh:"黑斑羚", en:"Impala", img:"images/impala.jpg", group:"other"},
+  {zh:"湯氏瞪羚", en:"Thomson's Gazelle", img:"images/gazelle.jpg", group:"other"},
+  {zh:"大羚羊", en:"Eland", img:"images/eland.jpg", group:"other"},
+  {zh:"轉角牛羚", en:"Topi", img:"images/topi.jpg", group:"other"},
+  {zh:"黑背胡狼", en:"Black-backed Jackal", img:"images/jackal.jpg", group:"other"},
+  {zh:"綠猴", en:"Vervet Monkey", img:"images/monkey.jpg", group:"other"},
+  {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg", group:"other"},
+  {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg", group:"other"},
+  {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg", group:"other"},
+  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other"}
 ];
+
+// 圖鑑詳細資料,key 為英文名
+const DETAILS = {
+  "Lion": {sci:"Panthera leo",
+    zh:{id:"公獅有鬃毛,體型明顯大於母獅;毛色土黃,尾端有一撮黑毛。",
+        hab:"唯一真正群居的大型貓科動物。一群以有血緣的母獅為核心,加上一到兩隻成年公獅,狩獵多由母獅合作完成。",
+        spot:"一天有將近 20 小時在休息,白天常見牠們癱在樹蔭或草叢裡。清晨與黃昏最有機會看到活動或狩獵。",
+        fact:"吼聲可以傳到 8 公里外,用來宣示地盤、也和同伴保持聯絡。"},
+    en:{id:"Males carry a mane and are noticeably larger than females. Tawny coat with a black tuft at the tail tip.",
+        hab:"The only truly social big cat. A pride is built around related females plus one or two adult males; the lionesses do most of the cooperative hunting.",
+        spot:"Rests up to 20 hours a day, so expect to find them flat out in shade. Dawn and dusk give the best chance of seeing them active.",
+        fact:"A lion's roar carries up to 8 km, advertising territory and keeping the pride in contact."}},
+
+  "Leopard": {sci:"Panthera pardus",
+    zh:{id:"身上是中空的梅花狀斑紋(獵豹是實心圓點);體格粗壯,四肢短而有力。",
+        hab:"完全獨居,領域性強。力氣極大,能把比自己還重的獵物拖上樹,避免被獅子和鬣狗搶走。",
+        spot:"主要夜間活動,白天常橫躺在粗樹枝上。沿著河岸的大樹仔細找,是最經典的方式。",
+        fact:"五霸中最難見到的一種,適應力卻也最強,從沙漠到雪地都有分布。"},
+    en:{id:"Rosettes are hollow flower shapes, unlike the cheetah's solid spots. Stocky body on short, powerful legs.",
+        hab:"Strictly solitary and territorial. Strong enough to haul a kill heavier than itself up a tree, out of reach of lions and hyenas.",
+        spot:"Mostly nocturnal; by day it drapes over a thick branch. Scanning big riverine trees is the classic way to find one.",
+        fact:"The hardest of the Big Five to see, yet also the most adaptable cat on earth, found from desert to snow."}},
+
+  "African Elephant": {sci:"Loxodonta africana",
+    zh:{id:"耳朵大而形狀神似非洲大陸,背部下凹;公母都有象牙。",
+        hab:"母象家族群由最年長的母象帶領,牠對水源的記憶決定整群乾季往哪走。成年公象多半獨來獨往。",
+        spot:"全天都可能遇到,水源附近機率最高。傍晚常成群到河邊喝水、洗泥浴。",
+        fact:"一天要吃超過 150 公斤植物。象鼻約有 4 萬條肌肉,能捲起一根草,也能推倒一棵樹。"},
+    en:{id:"Huge ears shaped roughly like the African continent, and a dipped back. Both sexes carry tusks.",
+        hab:"Herds of related females are led by the oldest matriarch, whose memory of waterholes carries the group through the dry season. Bulls are usually alone.",
+        spot:"Possible all day, best near water. Herds often come down to drink and mud-bathe in the late afternoon.",
+        fact:"Eats over 150 kg of vegetation a day. The trunk has around 40,000 muscles, enough to pick up a blade of grass or push over a tree."}},
+
+  "African Buffalo": {sci:"Syncerus caffer",
+    zh:{id:"兩角基部在額頭連成厚實的盔甲狀(boss),公牛特別明顯;體色深褐到近黑。",
+        hab:"群體可達數百頭。老公牛常落單或結成小群,脾氣最壞,當地嚮導稱牠們 dagga boys。",
+        spot:"有水有草的開闊地,清晨與傍晚成群移動覓食。",
+        fact:"公認是五霸中最危險的一種,受傷的水牛會繞回頭埋伏追捕牠的對象。"},
+    en:{id:"The horn bases fuse into a heavy helmet, the 'boss', most pronounced in bulls. Coat dark brown to almost black.",
+        hab:"Herds can run to several hundred. Old bulls live alone or in small bachelor groups, the famously bad-tempered 'dagga boys'.",
+        spot:"Open country with grass and water; herds move and graze in the early morning and late afternoon.",
+        fact:"Regarded as the most dangerous of the Big Five: a wounded buffalo will circle back and ambush whatever is following it."}},
+
+  "Black Rhino": {sci:"Diceros bicornis",
+    zh:{id:"上唇尖而能勾取枝葉(白犀牛是寬方唇);體型比白犀牛小,頭抬得比較高。",
+        hab:"獨居,視力差但嗅覺與聽覺極佳,個性比白犀牛暴躁許多。主食是灌木嫩枝。",
+        spot:"多在灌叢區,清晨黃昏活動。數量極少,能遇到算是極大的運氣。",
+        fact:"20 世紀因盜獵減少了約 98%,目前全非洲僅存約 6,000 多頭,屬極度瀕危。"},
+    en:{id:"Pointed, prehensile upper lip for grabbing twigs, unlike the white rhino's wide square lip. Smaller, and holds its head higher.",
+        hab:"Solitary, with poor eyesight but excellent hearing and smell, and a far shorter temper than the white rhino. Browses on shrubs.",
+        spot:"Thick bush, active around dawn and dusk. Numbers are tiny, so a sighting is real luck.",
+        fact:"Poaching cut the population by about 98% during the 20th century; only around 6,000 remain across Africa today."}},
+
+  "Wildebeest": {sci:"Connochaetes taurinus",
+    zh:{id:"頭大肩寬、後軀細瘦,像牛的頭配上馬的鬃毛和尾巴;毛色灰藍,身側有深色條紋。",
+        hab:"極度群居,常與斑馬混群。小牛出生後幾分鐘就能跟著整群奔跑。",
+        spot:"約七到十月在馬賽馬拉,其餘時間多在賽倫蓋提。渡河是整趟 Safari 最震撼的畫面。",
+        fact:"每年約 150 萬隻參與大遷徙,路線超過 800 公里,是地表規模最大的陸上動物遷徙。"},
+    en:{id:"Heavy head and shoulders tapering to a narrow rear, like an ox's head with a horse's mane and tail. Grey-blue coat with dark vertical stripes.",
+        hab:"Intensely gregarious and often mixed in with zebra. Calves are up and running with the herd within minutes of birth.",
+        spot:"In the Masai Mara roughly July to October, in the Serengeti the rest of the year. The river crossings are the most dramatic sight on safari.",
+        fact:"About 1.5 million take part in the great migration, a circuit of more than 800 km, the largest overland animal migration on earth."}},
+
+  "Warthog": {sci:"Phacochoerus africanus",
+    zh:{id:"臉側有疣狀肉瘤,獠牙向上彎;奔跑時尾巴直直豎起。",
+        hab:"白天活動,夜裡躲進土豚挖的洞穴。常跪著用前腳和鼻子挖掘草根與塊莖。",
+        spot:"開闊草地和水坑邊很常見,通常一家子一起行動。",
+        fact:"尾巴豎起像一面小旗子,讓長草中的同伴隨時看得到彼此。"},
+    en:{id:"Wart-like growths on the face and upward-curving tusks. Runs with its tail held straight up.",
+        hab:"Active by day, sleeping in burrows dug by aardvarks. Kneels on its front legs to root up grasses and tubers.",
+        spot:"Common on open grass and around waterholes, usually as a family group.",
+        fact:"That raised tail works like a small flag, keeping the family in sight of each other in long grass."}},
+
+  "Spotted Hyena": {sci:"Crocuta crocuta",
+    zh:{id:"前高後低的斜背、圓耳,身上有不規則深色斑點;體型比胡狼大得多。",
+        hab:"母系社會,族群可達 80 隻,地位最低的母鬣狗仍高於所有公鬣狗。",
+        spot:"主要夜行,清晨常見牠們守在獵物殘骸旁。洞穴附近常有幼獸。",
+        fact:"咬合力是陸上掠食者中最強之一,能直接咬碎骨頭;而且約七成食物是自己獵來的,不是撿剩的。"},
+    en:{id:"Sloping back, rounded ears and irregular dark spots. Much larger than a jackal.",
+        hab:"Lives in female-dominated clans of up to 80, where even the lowest-ranking female outranks every male.",
+        spot:"Mainly nocturnal; often found at a carcass at first light. Cubs gather around den sites.",
+        fact:"One of the strongest bites of any land predator, able to crack bone, and roughly 70% of its food is hunted rather than scavenged."}},
+
+  "Marabou Stork": {sci:"Leptoptilos crumenifer",
+    zh:{id:"身高可達 1.5 公尺,頭頸光禿,喉部垂著粉紅色肉囊,翼展超過 2.5 公尺。",
+        hab:"雜食,屍體、小動物、垃圾都吃,常和禿鷲一起出現在獵物殘骸旁。",
+        spot:"村鎮周邊、垃圾場、湖岸都容易看到,也常站在高樹上。",
+        fact:"被稱為「送葬者鳥」,因為走路時駝背、收起的翅膀像一件黑色斗篷。"},
+    en:{id:"Up to 1.5 m tall, with a bald head and neck and a pink throat pouch. Wingspan over 2.5 m.",
+        hab:"Omnivorous: carrion, small animals and rubbish all count. Frequently shares a carcass with vultures.",
+        spot:"Easy to find around towns, tips and lake shores, and often perched in tall trees.",
+        fact:"Nicknamed the 'undertaker bird' for its hunched walk and the black, cloak-like set of its folded wings."}},
+
+  "Vulture": {sci:"Gyps africanus 等多種",
+    zh:{id:"頭頸光禿、翅膀寬大適合滑翔。東非最常見的是白背兀鷲與皺臉禿鷲等數種。",
+        hab:"靠熱氣流在高空盤旋尋找屍體,視力極佳,能從數公里外發現獵殺現場。",
+        spot:"看到天空有禿鷲盤旋,通常代表下方有屍體或正在發生的獵殺——跟著牠們走常有收穫。",
+        fact:"非洲禿鷲數量近 30 年暴跌逾 80%,主因是中毒,是草原上最被低估的生態危機。"},
+    en:{id:"Bald head and neck and broad soaring wings. East Africa's commonest are the white-backed and lappet-faced vultures.",
+        hab:"Rides thermals at height, scanning for carcasses with exceptional eyesight from kilometres away.",
+        spot:"Circling vultures usually mean a carcass or a kill in progress below, so following them often pays off.",
+        fact:"African vulture numbers have crashed by more than 80% in three decades, mostly from poisoning, the savannah's most underrated crisis."}},
+
+  "Cheetah": {sci:"Acinonyx jubatus",
+    zh:{id:"體型纖細、腿長,眼角到嘴邊有黑色淚痕;斑點是實心圓點(花豹是空心梅花)。",
+        hab:"白天狩獵,藉此避開夜行的獅子和鬣狗。全力衝刺只能維持 20 到 30 秒,之後需要長時間喘息。",
+        spot:"偏好開闊短草原,常站上蟻丘或倒木瞭望。清晨與傍晚最活躍。",
+        fact:"加速比超跑還快,約 3 秒就能從靜止加速到時速 95 公里,但近一半的獵物會被獅子或鬣狗搶走。"},
+    en:{id:"Slender, long-legged build with black 'tear lines' from eye to mouth. Spots are solid, unlike the leopard's hollow rosettes.",
+        hab:"Hunts by day to avoid lions and hyenas. A sprint lasts only 20 to 30 seconds and is followed by a long recovery.",
+        spot:"Prefers open short grass and often climbs a termite mound or fallen tree to scan. Most active early and late.",
+        fact:"Accelerates faster than a supercar, 0 to 95 km/h in about three seconds, but loses up to half its kills to lions and hyenas."}},
+
+  "Giraffe": {sci:"Giraffa camelopardalis",
+    zh:{id:"世界最高的動物,公的可達 5.5 公尺;不同亞種的斑塊形狀與邊緣都不一樣。",
+        hab:"一天只睡約 30 分鐘到 2 小時,多半站著睡。主食金合歡樹葉,舌頭有厚角質層可抵擋尖刺。",
+        spot:"疏林和林地邊緣,全天可見。喝水時必須張開前腿,是最有趣的畫面。",
+        fact:"脖子只有 7 塊頸椎,跟人類一樣,只是每一塊都特別長。"},
+    en:{id:"The tallest animal alive; bulls reach 5.5 m. Patch shape and edging differ between subspecies.",
+        hab:"Sleeps only about 30 minutes to 2 hours a day, usually standing. Feeds mainly on acacia, with a tough tongue that shrugs off thorns.",
+        spot:"Woodland edges and open bush, visible all day. Watch for the splayed-leg stance it must adopt to drink.",
+        fact:"Its neck contains just seven vertebrae, the same number as yours, only far longer."}},
+
+  "Plains Zebra": {sci:"Equus quagga",
+    zh:{id:"條紋較寬並延伸到腹部,腿上常有淺棕色的影子紋。每一隻的紋路都獨一無二。",
+        hab:"以一公多母的家族為單位,常與角馬混群,利用兩種動物不同的感官互補警戒。",
+        spot:"開闊草原極常見,全天活動,常在水坑邊排隊喝水。",
+        fact:"條紋的用途至今仍有爭論,近年最有力的證據認為主要功能是驅趕吸血的采采蠅。"},
+    en:{id:"Broad stripes that carry onto the belly, often with faint brown 'shadow' stripes on the legs. Every pattern is unique.",
+        hab:"Family groups of one stallion and several mares, usually mixed in with wildebeest so the two species' different senses complement each other.",
+        spot:"Very common on open grassland, active all day, and queuing at waterholes.",
+        fact:"What the stripes are for is still argued over; the strongest recent evidence says they deter biting tsetse flies."}},
+
+  "Hippopotamus": {sci:"Hippopotamus amphibius",
+    zh:{id:"巨大的桶狀身軀,眼睛、耳朵和鼻孔都長在頭頂,方便整天泡在水裡只露出一點點。",
+        hab:"白天泡水避免曬傷,夜裡上岸吃草,一晚可以走好幾公里、吃掉 40 公斤草。",
+        spot:"河流與水塘整天都看得到;傍晚上岸時最容易看到全身。",
+        fact:"皮膚會分泌一種紅色油狀物質,兼具防曬和抗菌功能,被稱為「血汗」,但河馬其實不會流汗。"},
+    en:{id:"A vast barrel of a body with eyes, ears and nostrils all set on top of the head for staying submerged.",
+        hab:"Stays in water by day to avoid sunburn and comes ashore at night to graze, walking several kilometres and eating around 40 kg of grass.",
+        spot:"Rivers and pools all day; late afternoon, as they haul out, is the best chance to see the whole animal.",
+        fact:"Its skin secretes a red, oily substance that works as sunscreen and antiseptic, the so-called 'blood sweat', though hippos don't actually sweat."}},
+
+  "Nile Crocodile": {sci:"Crocodylus niloticus",
+    zh:{id:"非洲最大的爬蟲類,成體可超過 5 公尺,背部有堅硬的骨板。",
+        hab:"伏擊型掠食者,可以數個月不進食。母鱷會守護巢穴,幼鱷孵化後用嘴含著送進水裡。",
+        spot:"河岸與沙洲上曬太陽,遷徙季在馬拉河的渡口最容易看到。",
+        fact:"咬合力是已知動物中最強的,但張開嘴巴的肌肉相對非常弱。"},
+    en:{id:"Africa's largest reptile, over 5 m when fully grown, with heavy bony plates along the back.",
+        hab:"An ambush predator that can go months without eating. Females guard the nest and carry newly hatched young to the water in their mouths.",
+        spot:"Basking on banks and sandbars; during the migration the Mara River crossings are the place to see them.",
+        fact:"It has the strongest measured bite of any animal, yet the muscles that open its jaws are comparatively weak."}},
+
+  "Impala": {sci:"Aepyceros melampus",
+    zh:{id:"紅棕色毛皮,臀部有黑色 M 形紋;只有公羚長有豎琴狀的長角。",
+        hab:"旱季母羚聚成大群,公羚則各自守著領域。遇到危險整群會四散亂跳,干擾掠食者鎖定目標。",
+        spot:"最常見的羚羊之一,林地邊緣整天都看得到。",
+        fact:"一躍可達 3 公尺高、10 公尺遠,而且常常毫無必要地跳——那是在展示自己的體能。"},
+    en:{id:"Rich chestnut coat with a black 'M' on the rump. Only males carry the long lyre-shaped horns.",
+        hab:"Females form large herds in the dry season while males hold territories. When alarmed the herd scatters in all directions to confuse a predator.",
+        spot:"One of the commonest antelope; visible all day along woodland edges.",
+        fact:"Leaps 3 m high and 10 m far, and often does so for no obvious reason at all, a display of sheer fitness."}},
+
+  "Thomson's Gazelle": {sci:"Eudorcas thomsonii",
+    zh:{id:"體型小,肩高約 60 公分,身側有一條明顯粗黑帶,尾巴不停左右擺動。",
+        hab:"跟著角馬與斑馬遷徙,吃牠們啃過之後重新長出的嫩草。",
+        spot:"開闊短草原,成群出現,全天可見。",
+        fact:"時速可達 80 公里而且能急轉彎,是少數能靠變向甩掉獵豹的獵物。"},
+    en:{id:"Small, about 60 cm at the shoulder, with a bold black band along the flank and a tail that flicks constantly.",
+        hab:"Follows the wildebeest and zebra, feeding on the fresh regrowth they leave behind.",
+        spot:"Open short grassland, in groups, all day.",
+        fact:"Runs at up to 80 km/h and turns sharply, one of the few prey animals able to out-manoeuvre a cheetah."}},
+
+  "Eland": {sci:"Taurotragus oryx",
+    zh:{id:"世界最大的羚羊,公的肩高近 1.8 公尺、體重可超過 900 公斤;雌雄都有螺旋狀的角,公的頸下有明顯肉垂。",
+        hab:"個性機警,看到車輛常遠遠走開。能長時間不喝水,從食物中取得水分。儘管體重接近一噸,仍能原地躍過 2 公尺高的障礙。",
+        spot:"疏林與開闊地,清晨黃昏較活躍,通常距離較遠。",
+        fact:"走路時膝關節的肌腱會發出清脆的喀喀聲,常常還沒看到牠就先聽到聲音。"},
+    en:{id:"The world's largest antelope: bulls stand nearly 1.8 m and can exceed 900 kg. Both sexes have spiral horns; bulls have a heavy dewlap.",
+        hab:"Wary and inclined to move off from vehicles. Can go long periods without drinking, taking moisture from its food. Despite the bulk, it clears a 2 m obstacle from standing.",
+        spot:"Open woodland and plains, most active early and late, usually at a distance.",
+        fact:"Tendons in its knees make a distinct clicking sound as it walks, often audible before you see the animal."}},
+
+  "Topi": {sci:"Damaliscus lunatus jimela",
+    zh:{id:"深紅棕色毛皮帶紫藍光澤,臉部與大腿有深色斑塊,角呈彎曲的環狀。",
+        hab:"常見單隻站在蟻丘上瞭望,替整群警戒。繁殖季公的會佔據固定的求偶場地。",
+        spot:"馬賽馬拉草原很常見;站在高處放哨的那一隻通常就是牠。",
+        fact:"是非洲跑得最快的羚羊之一,時速可達 70 公里,而且耐力很好。"},
+    en:{id:"Deep reddish-brown with a purplish sheen, dark patches on the face and thighs, and ringed, curved horns.",
+        hab:"Often seen alone on top of a termite mound, keeping watch for the herd. Males hold fixed display grounds in the breeding season.",
+        spot:"Common on the Mara plains; the animal standing on the high point is usually this one.",
+        fact:"One of Africa's fastest antelope, reaching 70 km/h, with the stamina to keep going."}},
+
+  "Black-backed Jackal": {sci:"Lupulella mesomelas",
+    zh:{id:"體型像小型犬,背上有黑白夾雜的鞍狀斑,耳朵大而尖,尾巴蓬鬆。",
+        hab:"多半成對終生相伴,共同守護領域、一起育幼。機會主義者,幾乎什麼都吃。",
+        spot:"清晨與黃昏最活躍,常在獅子的獵物周圍徘徊等待機會。",
+        fact:"高亢如哭喊的叫聲,是東非夜晚最具代表性的聲音之一。"},
+    en:{id:"Small dog-like build with a black-and-silver 'saddle' on the back, large pointed ears and a bushy tail.",
+        hab:"Usually pairs for life, defending a territory and raising pups together. An opportunist that eats almost anything.",
+        spot:"Most active at dawn and dusk, often hanging around a lion kill waiting for a gap.",
+        fact:"Its high, wailing call is one of the most characteristic sounds of an East African night."}},
+
+  "Vervet Monkey": {sci:"Chlorocebus pygerythrus",
+    zh:{id:"灰色身體、黑臉配白色眉帶,體型纖細;成年公猴有顯眼的藍色陰囊。",
+        hab:"群居且階級分明。非常善於觀察人類,會趁隙偷取食物。",
+        spot:"營地、河岸林、樹上,白天隨處可見。",
+        fact:"會針對不同掠食者發出不同的警報聲——看到老鷹、蛇、花豹各有專屬叫聲,同伴聽到會做出不同的逃生動作。"},
+    en:{id:"Grey body, black face with a white brow band, slim build. Adult males have a startlingly blue scrotum.",
+        hab:"Lives in troops with a clear hierarchy. Quick to learn from people, and to take food from them.",
+        spot:"Camps, riverine forest and trees, all day.",
+        fact:"Gives different alarm calls for different predators: eagle, snake and leopard each get their own, and the troop reacts differently to each."}},
+
+  "Olive Baboon": {sci:"Papio anubis",
+    zh:{id:"體型壯碩,毛色橄欖灰,口鼻部長而突出像狗;尾巴基部先上翹再垂下。",
+        hab:"群體可達上百隻,社會關係複雜。雜食,從果實、昆蟲到小型羚羊都吃。",
+        spot:"路邊、營地周邊和岩石區,白天成群移動。",
+        fact:"群體裡的友誼能維持好幾年,靠互相理毛維繫;理毛的對象往往比血緣更能預測誰會在衝突時幫誰。"},
+    en:{id:"Powerfully built, olive-grey coat, long dog-like muzzle. The tail kinks up at the base then hangs down.",
+        hab:"Troops of up to a hundred with complex social politics. Omnivorous, from fruit and insects to small antelope.",
+        spot:"Roadsides, around camps and rocky areas, moving in groups during the day.",
+        fact:"Bonds within a troop can last years, maintained by grooming; who grooms whom predicts who comes to whose aid better than kinship does."}},
+
+  "Grey Crowned Crane": {sci:"Balearica regulorum",
+    zh:{id:"頭頂一叢金色硬羽冠,臉頰有紅白斑塊,翅膀上有大面積白斑。",
+        hab:"成對或小群出現在濕地與草原交界,邊走邊用腳踏地,把昆蟲驚出來再啄食。",
+        spot:"濕地、水塘邊,全天可見,常成雙成對出現。",
+        fact:"是烏干達的國鳥,也畫在該國國旗上。求偶時會跳躍、鞠躬、展開雙翅,像在跳舞。"},
+    en:{id:"A spray of stiff golden feathers on the crown, red and white cheek patches and bold white wing panels.",
+        hab:"Pairs or small groups at the edge of wetlands and grassland, stamping the ground to flush insects as they walk.",
+        spot:"Marshes and pool edges, all day, usually in pairs.",
+        fact:"Uganda's national bird, and on its flag. Courting birds leap, bow and spread their wings in an unmistakable dance."}},
+
+  "Kori Bustard": {sci:"Ardeotis kori",
+    zh:{id:"體型高大可達 1.2 公尺,灰褐色身體、頸部有細密橫紋,走路緩慢而莊重。",
+        hab:"在地面覓食,吃昆蟲、小型爬蟲和種子。很少飛,受驚時會先快走一段再起飛。",
+        spot:"開闊短草原,常單獨出現,清晨較容易看到。",
+        fact:"是世界上最重的飛行鳥類之一,公鳥可重達 20 公斤;求偶時會把頸部羽毛鼓成一顆大白球。"},
+    en:{id:"Tall, up to 1.2 m, with a grey-brown body, finely barred neck and a slow, stately walk.",
+        hab:"Forages on the ground for insects, small reptiles and seeds. Reluctant to fly; it walks fast before taking off.",
+        spot:"Open short grassland, usually alone, easiest in the early morning.",
+        fact:"Among the heaviest flying birds in the world, with males reaching 20 kg. In display they inflate the neck into a great white ball."}},
+
+  "Flamingo": {sci:"Phoeniconaias minor(小紅鸛)",
+    zh:{id:"粉紅色羽毛、向下彎曲的喙。東非最常見的是體型較小的小紅鸛,喙幾乎全黑。",
+        hab:"把喙倒過來放進水裡過濾藍綠藻和小型無脊椎動物,邊走邊左右擺頭。",
+        spot:"東非大裂谷的鹼水湖,例如納庫魯湖與博戈里亞湖,成千上萬隻聚集。",
+        fact:"粉紅色來自食物中的類胡蘿蔔素,吃得越多顏色越鮮豔;剛孵化的雛鳥其實是灰白色的。"},
+    en:{id:"Pink plumage and a sharply down-curved bill. East Africa's common species is the smaller lesser flamingo, with an almost entirely dark bill.",
+        hab:"Feeds with its bill upside down in the water, filtering blue-green algae and small invertebrates while swinging its head side to side.",
+        spot:"Soda lakes of the Rift Valley such as Nakuru and Bogoria, where they gather in their thousands.",
+        fact:"The pink comes from carotenoid pigments in its food: the more it eats, the brighter it gets. Chicks hatch grey-white."}}
+};
 
 const I18N = {
   zh: {
@@ -537,12 +781,16 @@ const I18N = {
     btnShare: "📸 分享 / 下載圖片",
     btnInvite: "👥 邀請朋友一起玩",
     btnDonate: "☕ 贊助我一杯飲料",
-    btnGuide: "📖 動物圖鑑",
-    guideTitle: "動物圖鑑",
-    guideClose: "關閉",
-    secBig: "BIG FIVE ・ 非洲五霸",
-    secUgly: "UGLY FIVE ・ 非洲五醜",
-    secOther: "其他草原動物",
+    tabBingo: "賓果卡",
+    tabGuide: "動物圖鑑",
+    guideHint: "點選動物看詳細介紹",
+    back: "← 返回列表",
+    tagBig: "BIG FIVE 五霸",
+    tagUgly: "UGLY FIVE 五醜",
+    secId: "辨認重點",
+    secHab: "習性",
+    secSpot: "何時何地看得到",
+    secFact: "冷知識",
     winTitle: "🎉 BINGO! 🎉",
     winSub: "恭喜你連成兩條線了!",
     winDonateMsg: "如果這個賓果有為你的 Safari 之旅增添樂趣,歡迎按右下角隨意 donate!祝大家順利集滿非洲五霸!",
@@ -577,12 +825,16 @@ const I18N = {
     btnShare: "📸 Share / Save Image",
     btnInvite: "👥 Invite Friends",
     btnDonate: "☕ Buy Me a Coffee",
-    btnGuide: "📖 Field Guide",
-    guideTitle: "Field Guide",
-    guideClose: "Close",
-    secBig: "THE BIG FIVE",
-    secUgly: "THE UGLY FIVE",
-    secOther: "OTHER SAVANNAH ANIMALS",
+    tabBingo: "Bingo Card",
+    tabGuide: "Field Guide",
+    guideHint: "Tap an animal for the full entry",
+    back: "← Back to list",
+    tagBig: "BIG FIVE",
+    tagUgly: "UGLY FIVE",
+    secId: "How to tell",
+    secHab: "Behaviour",
+    secSpot: "Where & when",
+    secFact: "Did you know",
     winTitle: "🎉 BINGO! 🎉",
     winSub: "You've completed two lines!",
     winDonateMsg: "If this bingo card added some fun to your Safari trip, feel free to donate in the bottom right. Good luck spotting the Big Five!",
@@ -628,10 +880,11 @@ function applyLang(){
   document.getElementById("winDonateMsg").textContent = t("winDonateMsg");
   document.getElementById("winClose").textContent = t("winClose");
   document.getElementById("langToggle").textContent = t("toggleLabel");
-  document.getElementById("btnGuide").textContent = t("btnGuide");
-  document.getElementById("guideTitle").textContent = t("guideTitle");
-  document.getElementById("guideClose").textContent = t("guideClose");
-  if(!guideOverlay.hidden) buildGuide();
+  document.getElementById("tabBingo").textContent = t("tabBingo");
+  document.getElementById("tabGuide").textContent = t("tabGuide");
+  document.getElementById("guideHint").textContent = t("guideHint");
+  buildPicker();
+  if(!guideDetail.hidden && currentDetail) showDetail(currentDetail);
   document.querySelectorAll(".cell").forEach(cell=>{
     const nameEl = cell.querySelector(".name");
     if(nameEl) nameEl.textContent = currentLang === "en" ? cell.dataset.en : cell.dataset.zh;
@@ -675,45 +928,90 @@ function checkWin(){
   }
 }
 
-const guideOverlay = document.getElementById("guideOverlay");
-const guideBody = document.getElementById("guideBody");
+const guideView = document.getElementById("guideView");
+const guidePicker = document.getElementById("guidePicker");
+const guideDetail = document.getElementById("guideDetail");
+const pickGrid = document.getElementById("pickGrid");
+const bingoCard = document.getElementById("captureCard");
+const actionsBar = document.querySelector(".actions");
+let currentDetail = null;
 
-function buildGuide(){
-  const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const sections = [["big", "secBig"], ["ugly", "secUgly"], ["other", "secOther"]];
-  let html = "";
-  for(const [group, key] of sections){
-    html += `<div class="guide-sec">${esc(t(key))}</div>`;
-    for(const a of ANIMALS.filter(x => x.group === group)){
-      const name = currentLang === "en" ? a.en : a.zh;
-      const alt  = currentLang === "en" ? a.zh : a.en;
-      const desc = currentLang === "en" ? a.dEn : a.dZh;
-      html += `<div class="guide-item">
-          <img class="guide-thumb" src="${esc(a.img)}" alt="${esc(name)}" loading="lazy">
-          <div class="guide-text">
-            <div class="guide-name">${esc(name)}</div>
-            <div class="guide-en">${esc(alt)}</div>
-            <div class="guide-desc">${esc(desc)}</div>
-          </div>
-        </div>`;
-    }
-  }
-  guideBody.innerHTML = html;
+function esc(s){
+  return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 }
 
-document.getElementById("btnGuide").addEventListener("click", ()=>{
-  buildGuide();
-  guideOverlay.hidden = false;
-  guideBody.scrollTop = 0;
+function groupTag(group){
+  if(group === "big") return t("tagBig");
+  if(group === "ugly") return t("tagUgly");
+  return "";
+}
+
+function buildPicker(){
+  pickGrid.innerHTML = ANIMALS.map((a, i) => {
+    const name = currentLang === "en" ? a.en : a.zh;
+    const tag = groupTag(a.group);
+    return `<button type="button" class="pick" data-i="${i}">
+        <img src="${esc(a.img)}" alt="${esc(name)}" loading="lazy">
+        <span class="pn">${esc(name)}</span>
+        ${tag ? `<span class="tag">${esc(tag)}</span>` : ""}
+      </button>`;
+  }).join("");
+}
+
+function showDetail(animal){
+  currentDetail = animal;
+  const d = DETAILS[animal.en];
+  const copy = d ? (currentLang === "en" ? d.en : d.zh) : null;
+  const name = currentLang === "en" ? animal.en : animal.zh;
+  const alt = currentLang === "en" ? animal.zh : animal.en;
+  const tag = groupTag(animal.group);
+  const sections = copy ? [["secId", copy.id], ["secHab", copy.hab],
+                           ["secSpot", copy.spot], ["secFact", copy.fact]] : [];
+
+  guideDetail.innerHTML = `
+    <button type="button" class="dt-back" id="dtBack">${esc(t("back"))}</button>
+    <img class="dt-hero" src="${esc(animal.img)}" alt="${esc(name)}">
+    <div class="dt-name">${esc(name)}</div>
+    <div class="dt-en">${esc(alt)}</div>
+    ${d ? `<div class="dt-sci">${esc(d.sci)}</div>` : ""}
+    ${tag ? `<span class="dt-tag">${esc(tag)}</span>` : ""}
+    ${sections.map(([k, v]) => `<div class="dt-sec">
+        <div class="dt-label">${esc(t(k))}</div>
+        <div class="dt-text">${esc(v)}</div>
+      </div>`).join("")}
+  `;
+  guideDetail.querySelector("#dtBack").addEventListener("click", showPicker);
+  guidePicker.hidden = true;
+  guideDetail.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+function showPicker(){
+  currentDetail = null;
+  guideDetail.hidden = true;
+  guidePicker.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+pickGrid.addEventListener("click", (e)=>{
+  const btn = e.target.closest(".pick");
+  if(btn) showDetail(ANIMALS[Number(btn.dataset.i)]);
 });
 
-document.getElementById("guideClose").addEventListener("click", ()=>{
-  guideOverlay.hidden = true;
-});
+function showView(which){
+  const guide = which === "guide";
+  bingoCard.hidden = guide;
+  actionsBar.hidden = guide;
+  statusEl.hidden = guide;
+  guideView.hidden = !guide;
+  document.getElementById("tabBingo").classList.toggle("active", !guide);
+  document.getElementById("tabGuide").classList.toggle("active", guide);
+  if(guide) showPicker();
+  window.scrollTo(0, 0);
+}
 
-guideOverlay.addEventListener("click", (e)=>{
-  if(e.target === guideOverlay) guideOverlay.hidden = true;
-});
+document.getElementById("tabBingo").addEventListener("click", ()=> showView("bingo"));
+document.getElementById("tabGuide").addEventListener("click", ()=> showView("guide"));
 
 document.getElementById("winClose").addEventListener("click", ()=>{
   winOverlay.hidden = true;
