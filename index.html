@@ -328,31 +328,25 @@
     padding:0 3px;
     word-break:break-word;
   }
-  .pick .pmeta{
-    display:flex;
-    align-items:baseline;
-    gap:3px;
-    padding:0 5px;
-    min-height:0.9em;
-  }
   .pick .tag{
-    font-size:0.5rem;
+    font-size:0.56rem;
     font-weight:700;
-    letter-spacing:0.2px;
+    letter-spacing:0.5px;
     color:var(--gold);
     white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
   }
+  /* sits just under the picture, hard against the right edge */
   .pick .stars{
+    align-self:flex-end;
+    padding-right:6px;
+    margin-bottom:-3px;
     font-size:0.54rem;
+    line-height:1;
     color:var(--gold);
     white-space:nowrap;
-    margin-left:auto;
-    flex:0 0 auto;
   }
   /* already ticked off on the bingo card */
-  .pick.found img{
+  .pick.found{
     outline:3px solid var(--check);
     outline-offset:-3px;
   }
@@ -1256,11 +1250,9 @@ function buildPicker(){
     const shot = shots[a.en];
     return `<button type="button" class="pick${found.has(a.en) ? " found" : ""}" data-i="${i}">
         <img src="${esc(shot || a.img)}" alt="${esc(name)}" loading="lazy">
+        <span class="stars" title="${esc(t("rare" + (a.rare || 1)))}">${stars(a.rare)}</span>
         <span class="pn">${esc(name)}</span>
-        <span class="pmeta">
-          <span class="tag">${esc(tag)}</span>
-          <span class="stars" title="${esc(t("rare" + (a.rare || 1)))}">${stars(a.rare)}</span>
-        </span>
+        ${tag ? `<span class="tag">${esc(tag)}</span>` : ""}
       </button>`;
   }).join("");
 }
