@@ -215,6 +215,7 @@
     background:transparent;
     color:var(--olive);
   }
+  button.act.wide{grid-column:1 / -1;}
   button.act:active{opacity:0.8;}
 
   .status{
@@ -225,6 +226,104 @@
     min-height:1em;
     width:100%;
     max-width:480px;
+  }
+
+  .guide-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(20,15,8,0.65);
+    z-index:120;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px 12px;
+  }
+  .guide-overlay[hidden]{display:none;}
+  .guide-panel{
+    background:var(--cream);
+    border:2px solid var(--gold);
+    border-radius:16px;
+    width:100%;
+    max-width:480px;
+    max-height:100%;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 12px 40px rgba(0,0,0,0.35);
+  }
+  .guide-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:14px 16px;
+    border-bottom:1px solid var(--gold-soft);
+    background:var(--cream);
+  }
+  .guide-head h2{
+    margin:0;
+    font-family:"Noto Serif TC",serif;
+    font-size:1.15rem;
+    color:var(--olive);
+  }
+  .guide-close{
+    border:1px solid var(--gold);
+    background:transparent;
+    color:var(--olive);
+    font-family:inherit;
+    font-size:0.78rem;
+    font-weight:700;
+    padding:6px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    flex:0 0 auto;
+  }
+  .guide-close:active{opacity:0.7;}
+  .guide-body{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:4px 16px 20px;
+  }
+  .guide-sec{
+    font-size:0.78rem;
+    font-weight:700;
+    color:var(--gold);
+    letter-spacing:1px;
+    margin:18px 0 8px;
+    padding-bottom:5px;
+    border-bottom:1px dashed var(--gold-soft);
+  }
+  .guide-item{
+    display:flex;
+    gap:12px;
+    padding:11px 0;
+    border-bottom:1px solid rgba(216,195,145,0.4);
+  }
+  .guide-item:last-child{border-bottom:none;}
+  .guide-thumb{
+    width:76px;
+    height:76px;
+    flex:0 0 76px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid var(--gold-soft);
+  }
+  .guide-text{min-width:0;}
+  .guide-name{
+    font-size:0.92rem;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.25;
+  }
+  .guide-en{
+    font-size:0.72rem;
+    color:var(--gold);
+    margin-bottom:4px;
+  }
+  .guide-desc{
+    font-size:0.76rem;
+    color:#7a6f5c;
+    line-height:1.55;
   }
 
   .win-overlay{
@@ -311,8 +410,19 @@
   <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
   <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
   <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
+  <button class="act secondary wide" id="btnGuide">📖 動物圖鑑</button>
 </div>
 <p class="status" id="status"></p>
+
+<div class="guide-overlay" id="guideOverlay" hidden>
+  <div class="guide-panel">
+    <div class="guide-head">
+      <h2 id="guideTitle">動物圖鑑</h2>
+      <button type="button" class="guide-close" id="guideClose">關閉</button>
+    </div>
+    <div class="guide-body" id="guideBody"></div>
+  </div>
+</div>
 
 <div class="win-overlay" id="winOverlay" hidden>
   <div class="win-modal">
@@ -333,32 +443,85 @@ const DONATE_URL_ZH = "https://p.ecpay.com.tw/7DE7DBE";
 const DONATE_URL_EN = "https://buymeacoffee.com/hsuhyanzio";
 // --------------------------------------------------------------------
 
+// group: big = Big Five, ugly = Ugly Five, other = 其他草原動物
 const ANIMALS = [
-  {zh:"獅子", en:"Lion", img:"images/lion.jpg"},
-  {zh:"花豹", en:"Leopard", img:"images/leopard.jpg"},
-  {zh:"非洲象", en:"African Elephant",  img:"images/elephant.jpg"},
-  {zh:"非洲水牛", en:"African Buffalo",  img:"images/buffalo.jpg"},
-  {zh:"黑犀牛", en:"Black Rhino",  img:"images/rhino.jpg"},
-  {zh:"獵豹", en:"Cheetah", img:"images/cheetah.jpg"},
-  {zh:"長頸鹿", en:"Giraffe", img:"images/giraffe.jpg"},
-  {zh:"平原斑馬", en:"Plains Zebra", img:"images/zebra.jpg"},
-  {zh:"河馬", en:"Hippopotamus", img:"images/hippo.jpg"},
-  {zh:"黑斑羚", en:"Impala", img:"images/impala.jpg"},
-  {zh:"角馬", en:"Wildebeest", img:"images/wildebeest.jpg"},
-  {zh:"疣豬", en:"Warthog", img:"images/warthog.jpg"},
-  {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg"},
-  {zh:"綠猴", en:"Vervet Monkey", img:"images/monkey.jpg"},
-  {zh:"尼羅鱷", en:"Nile Crocodile", img:"images/crocodile.jpg"},
-  {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg"},
-  {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg"},
-  {zh:"禿鸛", en:"Marabou Stork", img:"images/stork.jpg"},
-  {zh:"黑背胡狼", en:"Black-backed Jackal", img:"images/jackal.jpg"},
-  {zh:"禿鷲", en:"Vulture", img:"images/vulture.jpg"},
-  {zh:"斑點鬣狗", en:"Spotted Hyena", img:"images/hyena.jpg"},
-  {zh:"轉角牛羚", en:"Topi", img:"images/topi.jpg"},
-  {zh:"湯氏瞪羚", en:"Thomson's Gazelle", img:"images/gazelle.jpg"},
-  {zh:"大羚羊", en:"Eland", img:"images/eland.jpg"},
-  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg"}
+  {zh:"獅子", en:"Lion", img:"images/lion.jpg", group:"big",
+   dZh:"非洲最大的貓科動物,以母獅為核心成群生活。清晨與黃昏最活躍,白天多半躺在樹蔭下睡覺。",
+   dEn:"Africa's largest cat, living in prides built around related females. Most active at dawn and dusk; usually asleep in the shade by midday."},
+  {zh:"花豹", en:"Leopard", img:"images/leopard.jpg", group:"big",
+   dZh:"獨來獨往、善於爬樹,常把獵物拖上樹獨自享用。夜行性,是五霸中最難遇到的一種。",
+   dEn:"Solitary and a superb climber, often hauling its kill up a tree. Nocturnal and the hardest of the Big Five to spot."},
+  {zh:"非洲象", en:"African Elephant", img:"images/elephant.jpg", group:"big",
+   dZh:"陸地上最大的動物,由年長母象帶領家族群行動。耳朵形狀像非洲大陸,是辨識重點。",
+   dEn:"The largest land animal, moving in family herds led by an old matriarch. Its ear is shaped rather like the African continent."},
+  {zh:"非洲水牛", en:"African Buffalo", img:"images/buffalo.jpg", group:"big",
+   dZh:"成群行動、記仇又難以預測,公認是五霸中最危險的一種。頭頂的角基部連成厚盾狀。",
+   dEn:"Herd animal with an unpredictable temper, widely considered the most dangerous of the Big Five. Its horn bases fuse into a heavy shield."},
+  {zh:"黑犀牛", en:"Black Rhino", img:"images/rhino.jpg", group:"big",
+   dZh:"上唇呈尖勾狀,用來勾取灌木枝葉(白犀牛則是方唇吃草)。數量稀少,屬極度瀕危物種。",
+   dEn:"Has a hooked upper lip for browsing on shrubs, unlike the square-lipped, grass-grazing white rhino. Critically endangered and rarely seen."},
+
+  {zh:"角馬", en:"Wildebeest", img:"images/wildebeest.jpg", group:"ugly",
+   dZh:"又叫牛羚。每年上百萬隻在賽倫蓋提與馬賽馬拉之間來回遷徙,是草原上最壯觀的場面。",
+   dEn:"Also called the gnu. Over a million cross between the Serengeti and the Masai Mara each year in the great migration."},
+  {zh:"疣豬", en:"Warthog", img:"images/warthog.jpg", group:"ugly",
+   dZh:"臉頰有疣狀突起,奔跑時尾巴直直豎起像天線。常跪著用前腳挖草根吃。",
+   dEn:"Named for the warty bumps on its face; runs with its tail straight up like an aerial. Often kneels on its front legs to dig up roots."},
+  {zh:"斑點鬣狗", en:"Spotted Hyena", img:"images/hyena.jpg", group:"ugly",
+   dZh:"母系社會,由體型較大的母鬣狗領導。叫聲像笑聲,其實是效率極高的獵食者,不只吃腐肉。",
+   dEn:"Lives in female-led clans and \"laughs\" when excited. Despite its scavenger reputation, it hunts most of what it eats."},
+  {zh:"禿鸛", en:"Marabou Stork", img:"images/stork.jpg", group:"ugly",
+   dZh:"身高可達 1.5 公尺,光禿的頭頸和垂掛的喉囊十分好認。常在屍體或垃圾場附近出現。",
+   dEn:"Stands up to 1.5 m tall with a bald head and a dangling throat pouch. Often found near carcasses or rubbish tips."},
+  {zh:"禿鷲", en:"Vulture", img:"images/vulture.jpg", group:"ugly",
+   dZh:"草原上的清道夫,靠敏銳視力尋找屍體。天空出現盤旋的禿鷲,通常代表附近有獵殺現場。",
+   dEn:"The savannah's clean-up crew, finding carcasses by sight. Circling vultures usually mean a kill somewhere below."},
+
+  {zh:"獵豹", en:"Cheetah", img:"images/cheetah.jpg", group:"other",
+   dZh:"陸上跑最快的動物,衝刺時速可超過 100 公里。眼睛下方的黑色淚痕是最好的辨識特徵。",
+   dEn:"The fastest land animal, sprinting at over 100 km/h. The black \"tear lines\" below its eyes are the giveaway."},
+  {zh:"長頸鹿", en:"Giraffe", img:"images/giraffe.jpg", group:"other",
+   dZh:"世界最高的動物,舌頭長達 45 公分,用來捲取滿是尖刺的金合歡樹葉。",
+   dEn:"The tallest animal on earth, with a 45 cm tongue for stripping leaves from thorny acacias."},
+  {zh:"平原斑馬", en:"Plains Zebra", img:"images/zebra.jpg", group:"other",
+   dZh:"每隻身上的條紋都獨一無二,像指紋一樣。常和角馬混群一起遷徙。",
+   dEn:"No two have the same stripe pattern — it works like a fingerprint. Often migrates alongside wildebeest."},
+  {zh:"河馬", en:"Hippopotamus", img:"images/hippo.jpg", group:"other",
+   dZh:"白天泡在水裡避暑,入夜才上岸吃草。領域性極強,是非洲最具攻擊性的大型動物之一。",
+   dEn:"Spends the day submerged to stay cool and grazes on land at night. Highly territorial and among Africa's most dangerous large animals."},
+  {zh:"尼羅鱷", en:"Nile Crocodile", img:"images/crocodile.jpg", group:"other",
+   dZh:"非洲最大的爬蟲類,可長到 5 公尺以上。遷徙季節常埋伏在渡河點等待角馬。",
+   dEn:"Africa's largest reptile, growing over 5 m. During the migration it waits in ambush at river crossings."},
+  {zh:"黑斑羚", en:"Impala", img:"images/impala.jpg", group:"other",
+   dZh:"草原上最常見的羚羊,臀部有 M 形黑紋。受驚時能一躍 3 公尺高、跳出 10 公尺遠。",
+   dEn:"The most common antelope here, marked with a black \"M\" on the rump. Leaps 3 m high and 10 m far when startled."},
+  {zh:"湯氏瞪羚", en:"Thomson's Gazelle", img:"images/gazelle.jpg", group:"other",
+   dZh:"體型嬌小,身側有一條粗黑橫帶。跑得快又靈活,是獵豹最主要的獵物。",
+   dEn:"Small and quick, with a bold black side stripe. The cheetah's single most important prey species."},
+  {zh:"大羚羊", en:"Eland", img:"images/eland.jpg", group:"other",
+   dZh:"世界上最大的羚羊,公羚體重可超過 900 公斤,卻仍能輕鬆跳過 2 公尺的障礙。",
+   dEn:"The world's largest antelope — bulls top 900 kg yet can still clear a 2 m fence."},
+  {zh:"轉角牛羚", en:"Topi", img:"images/topi.jpg", group:"other",
+   dZh:"毛色帶紫藍色光澤,常獨自站在蟻丘頂端瞭望,是草原上稱職的哨兵。",
+   dEn:"Has a purplish sheen to its coat and often stands sentry on top of a termite mound, scanning for danger."},
+  {zh:"黑背胡狼", en:"Black-backed Jackal", img:"images/jackal.jpg", group:"other",
+   dZh:"背上有明顯的黑色鞍狀斑。機會主義者,常跟在獅子或鬣狗後面撿拾剩餘的食物。",
+   dEn:"Named for the dark saddle on its back. An opportunist that shadows lions and hyenas to scavenge the leftovers."},
+  {zh:"綠猴", en:"Vervet Monkey", img:"images/monkey.jpg", group:"other",
+   dZh:"灰色身體配黑臉的小型猴,營地常客。動作極快,沒看好的食物常常被牠們偷走。",
+   dEn:"A small grey monkey with a black face and a regular visitor to camps — watch your food, they are fast."},
+  {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg", group:"other",
+   dZh:"群居且社會關係複雜,一群可達數十隻。雄性犬齒長而銳利,遇到威脅會集體驅趕。",
+   dEn:"Lives in large, socially complex troops. Males have long, sharp canines and will mob a predator together."},
+  {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg", group:"other",
+   dZh:"頭頂有一叢金色冠羽,求偶時會跳躍舞動。是烏干達的國鳥,也出現在該國國旗上。",
+   dEn:"Crowned with a spray of golden feathers and known for its leaping courtship dance. Uganda's national bird."},
+  {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg", group:"other",
+   dZh:"世界上最重的飛行鳥類之一,多半在地面緩步覓食。求偶時雄鳥會鼓起頸部羽毛展示。",
+   dEn:"One of the heaviest flying birds in the world, usually seen striding slowly across open ground. Males puff out the neck to display."},
+  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other",
+   dZh:"成千上萬聚集在東非的鹼水湖。粉紅色羽毛來自食物中藻類與小蝦的色素。",
+   dEn:"Gathers in vast flocks on East Africa's soda lakes. The pink comes from pigments in the algae and shrimp it filters out."}
 ];
 
 const I18N = {
@@ -374,6 +537,12 @@ const I18N = {
     btnShare: "📸 分享 / 下載圖片",
     btnInvite: "👥 邀請朋友一起玩",
     btnDonate: "☕ 贊助我一杯飲料",
+    btnGuide: "📖 動物圖鑑",
+    guideTitle: "動物圖鑑",
+    guideClose: "關閉",
+    secBig: "BIG FIVE ・ 非洲五霸",
+    secUgly: "UGLY FIVE ・ 非洲五醜",
+    secOther: "其他草原動物",
     winTitle: "🎉 BINGO! 🎉",
     winSub: "恭喜你連成兩條線了!",
     winDonateMsg: "如果這個賓果有為你的 Safari 之旅增添樂趣,歡迎按右下角隨意 donate!祝大家順利集滿非洲五霸!",
@@ -408,6 +577,12 @@ const I18N = {
     btnShare: "📸 Share / Save Image",
     btnInvite: "👥 Invite Friends",
     btnDonate: "☕ Buy Me a Coffee",
+    btnGuide: "📖 Field Guide",
+    guideTitle: "Field Guide",
+    guideClose: "Close",
+    secBig: "THE BIG FIVE",
+    secUgly: "THE UGLY FIVE",
+    secOther: "OTHER SAVANNAH ANIMALS",
     winTitle: "🎉 BINGO! 🎉",
     winSub: "You've completed two lines!",
     winDonateMsg: "If this bingo card added some fun to your Safari trip, feel free to donate in the bottom right. Good luck spotting the Big Five!",
@@ -453,6 +628,10 @@ function applyLang(){
   document.getElementById("winDonateMsg").textContent = t("winDonateMsg");
   document.getElementById("winClose").textContent = t("winClose");
   document.getElementById("langToggle").textContent = t("toggleLabel");
+  document.getElementById("btnGuide").textContent = t("btnGuide");
+  document.getElementById("guideTitle").textContent = t("guideTitle");
+  document.getElementById("guideClose").textContent = t("guideClose");
+  if(!guideOverlay.hidden) buildGuide();
   document.querySelectorAll(".cell").forEach(cell=>{
     const nameEl = cell.querySelector(".name");
     if(nameEl) nameEl.textContent = currentLang === "en" ? cell.dataset.en : cell.dataset.zh;
@@ -495,6 +674,46 @@ function checkWin(){
     saveState();
   }
 }
+
+const guideOverlay = document.getElementById("guideOverlay");
+const guideBody = document.getElementById("guideBody");
+
+function buildGuide(){
+  const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const sections = [["big", "secBig"], ["ugly", "secUgly"], ["other", "secOther"]];
+  let html = "";
+  for(const [group, key] of sections){
+    html += `<div class="guide-sec">${esc(t(key))}</div>`;
+    for(const a of ANIMALS.filter(x => x.group === group)){
+      const name = currentLang === "en" ? a.en : a.zh;
+      const alt  = currentLang === "en" ? a.zh : a.en;
+      const desc = currentLang === "en" ? a.dEn : a.dZh;
+      html += `<div class="guide-item">
+          <img class="guide-thumb" src="${esc(a.img)}" alt="${esc(name)}" loading="lazy">
+          <div class="guide-text">
+            <div class="guide-name">${esc(name)}</div>
+            <div class="guide-en">${esc(alt)}</div>
+            <div class="guide-desc">${esc(desc)}</div>
+          </div>
+        </div>`;
+    }
+  }
+  guideBody.innerHTML = html;
+}
+
+document.getElementById("btnGuide").addEventListener("click", ()=>{
+  buildGuide();
+  guideOverlay.hidden = false;
+  guideBody.scrollTop = 0;
+});
+
+document.getElementById("guideClose").addEventListener("click", ()=>{
+  guideOverlay.hidden = true;
+});
+
+guideOverlay.addEventListener("click", (e)=>{
+  if(e.target === guideOverlay) guideOverlay.hidden = true;
+});
 
 document.getElementById("winClose").addEventListener("click", ()=>{
   winOverlay.hidden = true;
