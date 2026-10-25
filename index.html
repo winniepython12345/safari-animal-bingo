@@ -37,7 +37,7 @@
     background:var(--cream);
     border:2px solid var(--gold);
     border-radius:18px;
-    padding:52px 18px 26px;
+    padding:64px 18px 26px;
     position:relative;
     box-shadow:0 10px 30px rgba(60,45,10,0.12);
   }
@@ -151,10 +151,14 @@
     flex-direction:column;
     align-items:center;
   }
+  .cardwrap{
+    position:relative;
+    width:100%;
+  }
   .corner-ctrl{
     position:absolute;
-    top:12px;
-    right:13px;
+    top:21px;
+    right:21px;
     z-index:20;
     display:flex;
     align-items:center;
@@ -206,7 +210,7 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:8px;
-    margin-top:18px;
+    margin-bottom:4px;
     width:100%;
     max-width:480px;
   }
@@ -231,14 +235,13 @@
     background:transparent;
     color:var(--olive);
   }
-  .actions[hidden]{display:none;}
   button.act:active{opacity:0.8;}
 
   .status{
     text-align:center;
     font-size:0.72rem;
     color:#9a8f78;
-    margin-top:10px;
+    margin:8px 0 12px;
     min-height:1em;
     width:100%;
     max-width:480px;
@@ -270,7 +273,7 @@
   }
 
   .guide-card{
-    padding:52px 16px 18px;
+    padding:64px 16px 18px;
     display:flex;
     flex-direction:column;
     overflow:hidden;
@@ -591,6 +594,16 @@
 <body>
 
 <div class="stage">
+
+<div class="actions">
+  <button class="act" id="btnRegenerate">🔀 重新產生</button>
+  <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
+  <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
+  <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
+</div>
+<p class="status" id="status"></p>
+
+<div class="cardwrap">
 <div class="corner-ctrl">
   <div class="viewtabs">
     <button type="button" class="vtab active" id="tabBingo">賓果卡</button>
@@ -621,16 +634,6 @@
   <div class="grid" id="grid"></div>
 </div>
 
-<input type="file" id="photoInput" accept="image/*" style="display:none">
-
-<div class="actions">
-  <button class="act" id="btnRegenerate">🔀 重新產生</button>
-  <button class="act" id="btnShare">📸 分享 / 下載圖片</button>
-  <button class="act secondary" id="btnInvite">👥 邀請朋友一起玩</button>
-  <button class="act secondary" id="btnDonate">☕ 贊助我一杯飲料</button>
-</div>
-<p class="status" id="status"></p>
-
 <div class="card guide-card off" id="guideView">
   <div id="guidePicker">
     <p class="guide-hint" id="guideHint">點選動物看詳細介紹</p>
@@ -638,6 +641,9 @@
   </div>
   <div id="guideDetail" hidden></div>
 </div>
+</div><!-- /cardwrap -->
+
+<input type="file" id="photoInput" accept="image/*" style="display:none">
 </div><!-- /stage -->
 
 <div class="win-overlay" id="winOverlay" hidden>
@@ -1112,7 +1118,6 @@ const guidePicker = document.getElementById("guidePicker");
 const guideDetail = document.getElementById("guideDetail");
 const pickGrid = document.getElementById("pickGrid");
 const bingoCard = document.getElementById("captureCard");
-const actionsBar = document.querySelector(".actions");
 let currentDetail = null;
 let detailIndex = -1;
 
@@ -1277,8 +1282,6 @@ function showView(which){
   const guide = which === "guide";
   syncGuideHeight();
   bingoCard.classList.toggle("off", guide);
-  actionsBar.hidden = guide;
-  statusEl.hidden = guide;
   guideView.classList.toggle("off", !guide);
   const shown = guide ? guideView : bingoCard;
   shown.classList.remove("view-in");
@@ -1510,9 +1513,21 @@ function setStatus(msg){
 
 nameInput.addEventListener("input", saveState);
 
-document.getElementById("btnRegenerate").addEventListener("click", ()=> renderGrid(true));
+// The card actions live above both views, so make sure the bingo card is the
+// one on screen (and painted) before acting on it.
+function ensureBingoView(){
+  if(!bingoCard.classList.contains("off")) return Promise.resolve();
+  showView("bingo");
+  return new Promise(r=> requestAnimationFrame(()=> requestAnimationFrame(r)));
+}
+
+document.getElementById("btnRegenerate").addEventListener("click", async ()=>{
+  await ensureBingoView();
+  renderGrid(true);
+});
 
 document.getElementById("btnShare").addEventListener("click", async ()=>{
+  await ensureBingoView();
   setStatus(t("statusImgGenerating"));
   try{
     const canvas = await html2canvas(document.getElementById("captureCard"), {
