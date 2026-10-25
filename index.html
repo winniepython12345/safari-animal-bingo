@@ -404,31 +404,23 @@
   .dt-hero-wrap.found{
     box-shadow:0 0 0 3px var(--check), 0 8px 22px rgba(60,45,10,0.16);
   }
-  .dt-rare{
-    flex:0 0 auto;
-    text-align:right;
-    padding-bottom:2px;
-    text-shadow:0 1px 4px rgba(16,12,6,0.75);
+  .dt-titlerow{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
   }
   .dt-stars{
-    font-size:0.86rem;
+    flex:0 0 auto;
+    font-size:0.95rem;
     letter-spacing:1px;
-    line-height:1;
-    color:#e2bf72;
-  }
-  .dt-rare-text{
-    font-size:0.6rem;
-    opacity:0.95;
-    margin-top:4px;
     white-space:nowrap;
+    color:#e2bf72;
+    text-shadow:0 1px 4px rgba(16,12,6,0.75);
   }
   .dt-hero-scrim{
     position:absolute;
     inset:auto 0 0 0;
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:10px;
     padding:34px 16px 14px;
     background:linear-gradient(to top, rgba(26,20,12,0.82) 0%, rgba(26,20,12,0.45) 45%, rgba(26,20,12,0) 100%);
     color:#fff;
@@ -1296,14 +1288,11 @@ function detailMarkup(animal, i){
         <img class="dt-hero fade-img" src="${esc(shot || animal.img)}" alt="${esc(name)}">
         ${tag ? `<span class="dt-tag">${esc(tag)}</span>` : ""}
         <div class="dt-hero-scrim">
-          <div>
+          <div class="dt-titlerow">
             <div class="dt-name">${esc(name)}</div>
-            <div class="dt-meta">${esc(alt)}${d ? ` · <span class="dt-sci">${esc(d.sci)}</span>` : ""}</div>
+            <div class="dt-stars" title="${esc(t("rare" + (animal.rare || 1)))}">${stars(animal.rare)}</div>
           </div>
-          <div class="dt-rare">
-            <div class="dt-stars">${stars(animal.rare)}</div>
-            <div class="dt-rare-text">${esc(t("rare" + (animal.rare || 1)))}</div>
-          </div>
+          <div class="dt-meta">${esc(alt)}${d ? ` · <span class="dt-sci">${esc(d.sci)}</span>` : ""}</div>
         </div>
       </div>
       ${sections.map(([k, v]) => `<div class="dt-sec">
