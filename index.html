@@ -683,7 +683,12 @@ const ANIMALS = [
   {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg", group:"other"},
   {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg", group:"other"},
   {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg", group:"other"},
-  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other"}
+  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other"},
+  {zh:"藪貓", en:"Serval", img:"images/serval.jpg", group:"other"},
+  {zh:"犬羚", en:"Dik-dik", img:"images/dikdik.jpg", group:"other"},
+  {zh:"大耳狐", en:"Bat-eared Fox", img:"images/batearedfox.jpg", group:"other"},
+  {zh:"蹄兔", en:"Rock Hyrax", img:"images/hyrax.jpg", group:"other"},
+  {zh:"蛇鷲", en:"Secretary Bird", img:"images/secretarybird.jpg", group:"other"}
 ];
 
 // 圖鑑詳細資料,key 為英文名
@@ -936,7 +941,57 @@ const DETAILS = {
     en:{id:"Pink plumage and a sharply down-curved bill. East Africa's common species is the smaller lesser flamingo, with an almost entirely dark bill.",
         hab:"Feeds with its bill upside down in the water, filtering blue-green algae and small invertebrates while swinging its head side to side.",
         spot:"Soda lakes of the Rift Valley such as Nakuru and Bogoria, where they gather in their thousands.",
-        fact:"The pink comes from carotenoid pigments in its food: the more it eats, the brighter it gets. Chicks hatch grey-white."}}
+        fact:"The pink comes from carotenoid pigments in its food: the more it eats, the brighter it gets. Chicks hatch grey-white."}},
+
+  "Serval": {sci:"Leptailurus serval",
+    zh:{id:"腿特別長,是貓科中腿身比例最長的;黃褐底色配黑斑與條紋,耳朵又大又圓,背面有黑底白斑。體重約 9 到 18 公斤。",
+        hab:"獨居,清晨與黃昏活動。幾乎完全靠聽覺狩獵——先用大耳朵在草叢裡聽出囓齒類的位置,再高高躍起用前掌拍擊。",
+        spot:"塞倫蓋提的 Ndutu 與 Seronera 一帶的短草原、濕地邊緣最有機會。草長的時候反而更容易看到牠跳躍的動作。",
+        fact:"一次可以躍起 2 到 3 公尺高、4 公尺遠。狩獵成功率約五成,是貓科動物裡數一數二高的。"},
+    en:{id:"The longest legs relative to body size of any cat. A tawny coat with black spots and stripes, and large rounded ears with a white spot on their black backs. Around 9-18 kg.",
+        hab:"Solitary and active at dawn and dusk. It hunts almost entirely by ear, pinpointing rodents in long grass before leaping and pinning them with its forepaws.",
+        spot:"The short-grass plains and wetland edges around Ndutu and Seronera in the Serengeti. Long grass actually helps - that is when you get to see the leap.",
+        fact:"It can jump 2-3 m up and 4 m forward in a single pounce, and succeeds in about half its hunts - among the best strike rates of any cat."}},
+
+  "Dik-dik": {sci:"Madoqua kirkii(柯氏犬羚)",
+    zh:{id:"非洲最小的羚羊之一,肩高只有 35 到 40 公分,體重 4 到 6 公斤。吻部前端延長成可以活動的小象鼻狀;眼睛大,眼睛下方有明顯的黑色腺體點。只有公的有短短的直角。",
+        hab:"終生一夫一妻,幾乎總是成對出現——看到一隻,就在附近找另一隻。用眼睛下方的腺體把黑色分泌物塗在樹枝上標記地盤。",
+        spot:"Tarangire 的灌叢、Ngorongoro 火山口邊坡、塞倫蓋提巨岩堆周邊的灌叢。全天都可能遇到,常靜止在路邊灌叢下,車接近才突然竄出。",
+        fact:"幾乎不喝水,水分全部從植物取得。那根可以活動的小鼻子是散熱器官,靠鼻腔裡的血流降溫。名字來自受驚時像吹哨的「dik-dik」叫聲。"},
+    en:{id:"One of Africa's smallest antelopes - 35-40 cm at the shoulder, 4-6 kg. A mobile, elongated snout, big eyes with a dark gland spot beneath them, and short straight horns on males only.",
+        hab:"Monogamous for life and almost always seen in pairs - spot one, then look for its partner. Marks territory by dabbing a black secretion from the eye glands onto twigs.",
+        spot:"Tarangire's bush, the Ngorongoro crater rim and the scrub around the Serengeti kopjes. Active all day, often frozen under a roadside bush until your vehicle gets close.",
+        fact:"It barely drinks, taking all its water from plants. That little trunk is a radiator - blood flowing through the snout sheds heat. The name comes from the whistling 'dik-dik' alarm call."}},
+
+  "Bat-eared Fox": {sci:"Otocyon megalotis",
+    zh:{id:"耳朵長達 13 公分,相對體型是所有犬科裡最大的。臉上有黑色面罩,四肢下半截和尾巴尖端是黑的,體重只有 3 到 5 公斤。",
+        hab:"和其他犬科很不一樣,牠幾乎只吃昆蟲,約八成的食物是白蟻,靠那對大耳朵聽地底下的動靜來定位。成對或小家族一起活動。",
+        spot:"塞倫蓋提南部 Ndutu 一帶的短草平原最常見。清晨與傍晚在洞口曬太陽,常是一家子擠成一團。",
+        fact:"牠有 46 到 50 顆牙齒,比任何其他犬科動物都多,全都是為了嚼碎昆蟲而生。"},
+    en:{id:"Ears up to 13 cm - the largest relative to body size of any canid. A black facial mask, black lower legs and tail tip, and a slight 3-5 kg frame.",
+        hab:"Unlike other canids it is almost entirely insectivorous: around 80% of its diet is termites, located by listening for them underground. Lives in pairs or small family groups.",
+        spot:"The short-grass plains around Ndutu in the southern Serengeti. Look for families sunning themselves at the den mouth early and late in the day.",
+        fact:"It carries 46-50 teeth, more than any other canid, all built for crunching insects."}},
+
+  "Rock Hyrax": {sci:"Procavia capensis",
+    zh:{id:"看起來像隻胖土撥鼠,體重 2 到 5 公斤,灰褐色短毛,沒有尾巴。腳掌有橡膠般的肉墊,可以在光滑的岩石上行走。",
+        hab:"群居,幾十隻住在同一片岩石縫裡。體溫調節能力很差,所以清晨一定會集體爬到岩石上曬太陽;總有一隻在高處放哨,看到猛禽就發出尖銳警報。",
+        spot:"塞倫蓋提的 kopjes(花崗岩巨岩堆)上幾乎必見,像 Simba Kopjes、Moru Kopjes。早上八點到十點曬太陽的時候最好拍。",
+        fact:"牠現存最近的親戚是大象和海牛——那對上門齒其實是小獠牙,和象牙是同一種構造。"},
+    en:{id:"Looks like a plump marmot: 2-5 kg, short grey-brown fur, no tail. Rubbery footpads let it run across bare rock.",
+        hab:"Colonial, with dozens sharing one outcrop. It regulates its own temperature poorly, so mornings are spent basking in a heap, with one animal posted as a lookout that shrieks at any raptor.",
+        spot:"Practically guaranteed on the Serengeti kopjes - Simba Kopjes, Moru Kopjes. Best photographed between 8 and 10 in the morning while they sun themselves.",
+        fact:"Its closest living relatives are elephants and manatees - those upper incisors are a tiny pair of tusks, the same structure as an elephant's."}},
+
+  "Secretary Bird": {sci:"Sagittarius serpentarius",
+    zh:{id:"身高可達 1.3 公尺的大型猛禽,但在地面行走而不是盤旋。灰白身體配黑色的「燈籠褲」大腿羽毛,臉部是裸露的橘紅色皮膚,後腦有一簇黑色長羽。",
+        hab:"一天可以走二、三十公里找食物。狩獵方式很特別——用腳猛踏獵物,專門對付蛇和蜥蜴。成對活動,在平頂金合歡樹上築巨大的巢。",
+        spot:"塞倫蓋提平原、Ngorongoro 火山口底部的草原,全天都可能遇到。草原上大步行走的黑白大鳥就是牠,而且常常是一對一起走。",
+        fact:"牠一腳的力量可達自身體重的五倍,而且在大約 0.015 秒內完成,快到蛇根本來不及反應。名字一般認為來自後腦那簇長羽,很像舊時書記官夾在耳後的羽毛筆。"},
+    en:{id:"A raptor up to 1.3 m tall that walks instead of soaring. Pale grey body, black 'plus-four' thigh feathers, a bare orange-red face and a crest of long black quills at the back of the head.",
+        hab:"Covers 20-30 km a day on foot. It hunts by stamping - a technique aimed squarely at snakes and lizards. Pairs stay together and build a huge nest on a flat-topped acacia.",
+        spot:"The Serengeti plains and the floor of the Ngorongoro Crater, at any time of day. Look for a big black-and-white bird striding through the grass, usually with its partner.",
+        fact:"Each kick lands with about five times the bird's body weight, in roughly 15 thousandths of a second - far too fast for a snake to react."}}
 };
 
 const I18N = {
@@ -1307,6 +1362,15 @@ document.getElementById("winClose").addEventListener("click", ()=>{
   winOverlay.hidden = true;
 });
 
+// The Big Five and the Ugly Five are always dealt; the remaining cells are
+// drawn at random from the rest of the pool, so no two cards are alike.
+const CELL_COUNT = 25;
+function drawCard(){
+  const must = ANIMALS.filter(a => a.group === "big" || a.group === "ugly");
+  const rest = shuffle(ANIMALS.filter(a => a.group !== "big" && a.group !== "ugly"));
+  return shuffle(must.concat(rest.slice(0, CELL_COUNT - must.length)));
+}
+
 function shuffle(arr){
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){
@@ -1480,7 +1544,7 @@ function renderGrid(forceNew){
   }
   hasWon = false;
   winOverlay.hidden = true;
-  const shuffled = shuffle(ANIMALS).map(a=>({...a, checked:false, photo:null}));
+  const shuffled = drawCard().map(a=>({...a, checked:false, photo:null}));
   gridEl.innerHTML = "";
   shuffled.forEach(a=> gridEl.appendChild(buildCell(a)));
   dateValue.textContent = todayStr();
