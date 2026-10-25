@@ -294,12 +294,7 @@
     visibility:hidden;
     pointer-events:none;
   }
-  .guide-hint{
-    text-align:center;
-    font-size:0.76rem;
-    color:#9a8f78;
-    margin:0 0 14px;
-  }
+  #guidePicker > header{margin-bottom:16px;}
   .pick-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -319,6 +314,22 @@
     gap:5px;
   }
   .pick:active{opacity:0.75;}
+  .pick{position:relative;}
+  .pick.has-shot{
+    border-color:var(--check);
+    box-shadow:0 0 0 1px var(--check) inset;
+  }
+  .shot-badge{
+    position:absolute;
+    top:5px;
+    right:5px;
+    font-size:0.6rem;
+    line-height:1;
+    padding:4px 5px;
+    border-radius:20px;
+    background:rgba(192,57,43,0.92);
+    color:#fff;
+  }
   .pick img{
     width:100%;
     aspect-ratio:1/1;
@@ -415,6 +426,35 @@
     background:rgba(255,253,248,0.94);
     border-radius:20px;
     padding:4px 11px;
+  }
+
+  .dt-shot-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:0.6rem;
+    font-weight:700;
+    letter-spacing:0.6px;
+    color:#fff;
+    background:rgba(192,57,43,0.92);
+    border-radius:20px;
+    padding:4px 10px;
+  }
+  /* the original illustration, kept as a small reference beside your own shot */
+  .dt-shot-ref{
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    width:62px;
+    height:62px;
+    object-fit:cover;
+    border-radius:10px;
+    border:2px solid rgba(255,253,248,0.9);
+    box-shadow:0 4px 12px rgba(26,20,12,0.4);
+    z-index:2;
   }
 
   .dt-sec{
@@ -535,10 +575,6 @@
   }
   .vtab:focus-visible,.lang-toggle:focus-visible{outline-offset:1px;}
 
-  .guide-hint{
-    letter-spacing:0.5px;
-  }
-
   .win-overlay{
     position:fixed;
     inset:0;
@@ -635,7 +671,9 @@
 
 <div class="card guide-card off" id="guideView">
   <div id="guidePicker">
-    <p class="guide-hint" id="guideHint">點選動物看詳細介紹</p>
+    <header>
+      <h1 id="guideHint">非洲遊獵動物圖鑑</h1>
+    </header>
     <div class="pick-grid" id="pickGrid"></div>
   </div>
   <div id="guideDetail" hidden></div>
@@ -961,13 +999,14 @@ const I18N = {
     btnDonate: "☕ 贊助我一杯飲料",
     tabBingo: "賓果卡",
     tabGuide: "動物圖鑑",
-    guideHint: "點選動物看詳細介紹",
+    guideHint: "非洲遊獵動物圖鑑",
     back: "← 返回列表",
     prev: "上一個",
     next: "下一個",
     swipeHint: "左右滑動可切換動物",
     tagBig: "BIG FIVE 五霸",
     tagUgly: "UGLY FIVE 五醜",
+    yourShot: "你拍的",
     secId: "辨認重點",
     secHab: "習性",
     secSpot: "何時何地看得到",
@@ -1008,13 +1047,14 @@ const I18N = {
     btnDonate: "☕ Buy Me a Coffee",
     tabBingo: "Bingo Card",
     tabGuide: "Field Guide",
-    guideHint: "Tap an animal for the full entry",
+    guideHint: "African Safari Animal Guide",
     back: "← Back to list",
     prev: "PREV",
     next: "NEXT",
     swipeHint: "Swipe left or right to browse",
     tagBig: "BIG FIVE",
     tagUgly: "UGLY FIVE",
+    yourShot: "Your photo",
     secId: "How to tell",
     secHab: "Behaviour",
     secSpot: "Where & when",
@@ -1124,6 +1164,17 @@ function esc(s){
   return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 }
 
+// Photos the player uploaded onto the bingo card, keyed by English name,
+// so the field guide can show their own shot instead of the illustration.
+function userPhotos(){
+  const map = {};
+  Array.from(gridEl.children).forEach(cell=>{
+    const img = cell.querySelector(".photo");
+    if(img && cell.dataset.en) map[cell.dataset.en] = img.src;
+  });
+  return map;
+}
+
 function groupTag(group){
   if(group === "big") return t("tagBig");
   if(group === "ugly") return t("tagUgly");
@@ -1131,11 +1182,14 @@ function groupTag(group){
 }
 
 function buildPicker(){
+  const shots = userPhotos();
   pickGrid.innerHTML = ANIMALS.map((a, i) => {
     const name = currentLang === "en" ? a.en : a.zh;
     const tag = groupTag(a.group);
-    return `<button type="button" class="pick" data-i="${i}">
-        <img src="${esc(a.img)}" alt="${esc(name)}" loading="lazy">
+    const shot = shots[a.en];
+    return `<button type="button" class="pick${shot ? " has-shot" : ""}" data-i="${i}">
+        <img src="${esc(shot || a.img)}" alt="${esc(name)}" loading="lazy">
+        ${shot ? `<span class="shot-badge" title="${esc(t("yourShot"))}">📷</span>` : ""}
         <span class="pn">${esc(name)}</span>
         ${tag ? `<span class="tag">${esc(tag)}</span>` : ""}
       </button>`;
@@ -1150,6 +1204,7 @@ function detailMarkup(animal, i){
   const tag = groupTag(animal.group);
   const sections = copy ? [["secId", copy.id], ["secHab", copy.hab],
                           ["secSpot", copy.spot], ["secFact", copy.fact]] : [];
+  const shot = userPhotos()[animal.en];
   const prev = ANIMALS[i - 1], next = ANIMALS[i + 1];
   const label = a => a ? esc(currentLang === "en" ? a.en : a.zh) : "";
 
@@ -1160,8 +1215,10 @@ function detailMarkup(animal, i){
     </div>
     <div class="dt-inner" id="dtInner">
       <div class="dt-hero-wrap">
-        <img class="dt-hero fade-img" src="${esc(animal.img)}" alt="${esc(name)}">
+        <img class="dt-hero fade-img" src="${esc(shot || animal.img)}" alt="${esc(name)}">
         ${tag ? `<span class="dt-tag">${esc(tag)}</span>` : ""}
+        ${shot ? `<span class="dt-shot-badge">📷 ${esc(t("yourShot"))}</span>
+                  <img class="dt-shot-ref" src="${esc(animal.img)}" alt="${esc(name)}">` : ""}
         <div class="dt-hero-scrim">
           <div class="dt-name">${esc(name)}</div>
           <div class="dt-meta">${esc(alt)}${d ? ` · <span class="dt-sci">${esc(d.sci)}</span>` : ""}</div>
@@ -1259,6 +1316,7 @@ document.addEventListener("keydown", (e)=>{
 });
 
 function showPicker(){
+  buildPicker();
   currentDetail = null;
   guideDetail.hidden = true;
   guidePicker.hidden = false;
