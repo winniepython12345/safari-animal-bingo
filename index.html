@@ -328,11 +328,33 @@
     padding:0 3px;
     word-break:break-word;
   }
+  .pick .pmeta{
+    display:flex;
+    align-items:baseline;
+    gap:3px;
+    padding:0 5px;
+    min-height:0.9em;
+  }
   .pick .tag{
-    font-size:0.56rem;
+    font-size:0.5rem;
     font-weight:700;
-    letter-spacing:0.5px;
+    letter-spacing:0.2px;
     color:var(--gold);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .pick .stars{
+    font-size:0.54rem;
+    color:var(--gold);
+    white-space:nowrap;
+    margin-left:auto;
+    flex:0 0 auto;
+  }
+  /* already ticked off on the bingo card */
+  .pick.found img{
+    outline:3px solid var(--check);
+    outline-offset:-3px;
   }
 
   /* ---- field guide detail ---- */
@@ -379,9 +401,34 @@
     object-fit:cover;
     display:block;
   }
+  .dt-hero-wrap.found{
+    box-shadow:0 0 0 3px var(--check), 0 8px 22px rgba(60,45,10,0.16);
+  }
+  .dt-rare{
+    flex:0 0 auto;
+    text-align:right;
+    padding-bottom:2px;
+    text-shadow:0 1px 4px rgba(16,12,6,0.75);
+  }
+  .dt-stars{
+    font-size:0.86rem;
+    letter-spacing:1px;
+    line-height:1;
+    color:#e2bf72;
+  }
+  .dt-rare-text{
+    font-size:0.6rem;
+    opacity:0.95;
+    margin-top:4px;
+    white-space:nowrap;
+  }
   .dt-hero-scrim{
     position:absolute;
     inset:auto 0 0 0;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:10px;
     padding:34px 16px 14px;
     background:linear-gradient(to top, rgba(26,20,12,0.82) 0%, rgba(26,20,12,0.45) 45%, rgba(26,20,12,0) 100%);
     color:#fff;
@@ -659,36 +706,36 @@ const DONATE_URL_EN = "https://buymeacoffee.com/hsuhyanzio";
 
 // group: big = Big Five, ugly = Ugly Five, other = 其他草原動物
 const ANIMALS = [
-  {zh:"獅子", en:"Lion", img:"images/lion.jpg", group:"big"},
-  {zh:"花豹", en:"Leopard", img:"images/leopard.jpg", group:"big"},
-  {zh:"非洲象", en:"African Elephant", img:"images/elephant.jpg", group:"big"},
-  {zh:"非洲水牛", en:"African Buffalo", img:"images/buffalo.jpg", group:"big"},
-  {zh:"黑犀牛", en:"Black Rhino", img:"images/rhino.jpg", group:"big"},
-  {zh:"角馬", en:"Wildebeest", img:"images/wildebeest.jpg", group:"ugly"},
-  {zh:"疣豬", en:"Warthog", img:"images/warthog.jpg", group:"ugly"},
-  {zh:"斑點鬣狗", en:"Spotted Hyena", img:"images/hyena.jpg", group:"ugly"},
-  {zh:"禿鸛", en:"Marabou Stork", img:"images/stork.jpg", group:"ugly"},
-  {zh:"禿鷲", en:"Vulture", img:"images/vulture.jpg", group:"ugly"},
-  {zh:"獵豹", en:"Cheetah", img:"images/cheetah.jpg", group:"other"},
-  {zh:"長頸鹿", en:"Giraffe", img:"images/giraffe.jpg", group:"other"},
-  {zh:"平原斑馬", en:"Plains Zebra", img:"images/zebra.jpg", group:"other"},
-  {zh:"河馬", en:"Hippopotamus", img:"images/hippo.jpg", group:"other"},
-  {zh:"尼羅鱷", en:"Nile Crocodile", img:"images/crocodile.jpg", group:"other"},
-  {zh:"黑斑羚", en:"Impala", img:"images/impala.jpg", group:"other"},
-  {zh:"湯氏瞪羚", en:"Thomson's Gazelle", img:"images/gazelle.jpg", group:"other"},
-  {zh:"大羚羊", en:"Eland", img:"images/eland.jpg", group:"other"},
-  {zh:"轉角牛羚", en:"Topi", img:"images/topi.jpg", group:"other"},
-  {zh:"黑背胡狼", en:"Black-backed Jackal", img:"images/jackal.jpg", group:"other"},
-  {zh:"綠猴", en:"Vervet Monkey", img:"images/monkey.jpg", group:"other"},
-  {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg", group:"other"},
-  {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg", group:"other"},
-  {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg", group:"other"},
-  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other"},
-  {zh:"藪貓", en:"Serval", img:"images/serval.jpg", group:"other"},
-  {zh:"犬羚", en:"Dik-dik", img:"images/dikdik.jpg", group:"other"},
-  {zh:"大耳狐", en:"Bat-eared Fox", img:"images/batearedfox.jpg", group:"other"},
-  {zh:"蹄兔", en:"Rock Hyrax", img:"images/hyrax.jpg", group:"other"},
-  {zh:"蛇鷲", en:"Secretary Bird", img:"images/secretarybird.jpg", group:"other"}
+  {zh:"獅子", en:"Lion", img:"images/lion.jpg", group:"big", rare:1},
+  {zh:"花豹", en:"Leopard", img:"images/leopard.jpg", group:"big", rare:3},
+  {zh:"非洲象", en:"African Elephant", img:"images/elephant.jpg", group:"big", rare:1},
+  {zh:"非洲水牛", en:"African Buffalo", img:"images/buffalo.jpg", group:"big", rare:1},
+  {zh:"黑犀牛", en:"Black Rhino", img:"images/rhino.jpg", group:"big", rare:3},
+  {zh:"角馬", en:"Wildebeest", img:"images/wildebeest.jpg", group:"ugly", rare:1},
+  {zh:"疣豬", en:"Warthog", img:"images/warthog.jpg", group:"ugly", rare:1},
+  {zh:"斑點鬣狗", en:"Spotted Hyena", img:"images/hyena.jpg", group:"ugly", rare:1},
+  {zh:"禿鸛", en:"Marabou Stork", img:"images/stork.jpg", group:"ugly", rare:1},
+  {zh:"禿鷲", en:"Vulture", img:"images/vulture.jpg", group:"ugly", rare:1},
+  {zh:"獵豹", en:"Cheetah", img:"images/cheetah.jpg", group:"other", rare:2},
+  {zh:"長頸鹿", en:"Giraffe", img:"images/giraffe.jpg", group:"other", rare:1},
+  {zh:"平原斑馬", en:"Plains Zebra", img:"images/zebra.jpg", group:"other", rare:1},
+  {zh:"河馬", en:"Hippopotamus", img:"images/hippo.jpg", group:"other", rare:1},
+  {zh:"尼羅鱷", en:"Nile Crocodile", img:"images/crocodile.jpg", group:"other", rare:2},
+  {zh:"黑斑羚", en:"Impala", img:"images/impala.jpg", group:"other", rare:1},
+  {zh:"湯氏瞪羚", en:"Thomson's Gazelle", img:"images/gazelle.jpg", group:"other", rare:1},
+  {zh:"大羚羊", en:"Eland", img:"images/eland.jpg", group:"other", rare:2},
+  {zh:"轉角牛羚", en:"Topi", img:"images/topi.jpg", group:"other", rare:1},
+  {zh:"黑背胡狼", en:"Black-backed Jackal", img:"images/jackal.jpg", group:"other", rare:2},
+  {zh:"綠猴", en:"Vervet Monkey", img:"images/monkey.jpg", group:"other", rare:1},
+  {zh:"東非狒狒", en:"Olive Baboon", img:"images/baboon.jpg", group:"other", rare:1},
+  {zh:"灰冠鶴", en:"Grey Crowned Crane", img:"images/crane.jpg", group:"other", rare:2},
+  {zh:"灰頸鷺鴇", en:"Kori Bustard", img:"images/bustard.jpg", group:"other", rare:2},
+  {zh:"紅鶴", en:"Flamingo", img:"images/flamingo.jpg", group:"other", rare:2},
+  {zh:"藪貓", en:"Serval", img:"images/serval.jpg", group:"other", rare:3},
+  {zh:"犬羚", en:"Dik-dik", img:"images/dikdik.jpg", group:"other", rare:1},
+  {zh:"大耳狐", en:"Bat-eared Fox", img:"images/batearedfox.jpg", group:"other", rare:2},
+  {zh:"蹄兔", en:"Rock Hyrax", img:"images/hyrax.jpg", group:"other", rare:1},
+  {zh:"蛇鷲", en:"Secretary Bird", img:"images/secretarybird.jpg", group:"other", rare:2}
 ];
 
 // 圖鑑詳細資料,key 為英文名
@@ -1016,6 +1063,9 @@ const I18N = {
     swipeHint: "左右滑動可切換動物",
     tagBig: "BIG FIVE 五霸",
     tagUgly: "UGLY FIVE 五醜",
+    rare1: "容易看到",
+    rare2: "需要一點運氣",
+    rare3: "可遇不可求",
     secId: "辨認重點",
     secHab: "習性",
     secSpot: "何時何地看得到",
@@ -1063,6 +1113,9 @@ const I18N = {
     swipeHint: "Swipe left or right to browse",
     tagBig: "BIG FIVE",
     tagUgly: "UGLY FIVE",
+    rare1: "Easy to find",
+    rare2: "Takes some luck",
+    rare3: "A real stroke of luck",
     secId: "How to tell",
     secHab: "Behaviour",
     secSpot: "Where & when",
@@ -1183,6 +1236,19 @@ function userPhotos(){
   return map;
 }
 
+// Animals already ticked off on the bingo card, by English name.
+function checkedAnimals(){
+  const set = new Set();
+  Array.from(gridEl.children).forEach(cell=>{
+    if(cell.classList.contains("checked") && cell.dataset.en) set.add(cell.dataset.en);
+  });
+  return set;
+}
+
+function stars(rare){
+  return "\u2605".repeat(rare || 1);
+}
+
 function groupTag(group){
   if(group === "big") return t("tagBig");
   if(group === "ugly") return t("tagUgly");
@@ -1191,14 +1257,18 @@ function groupTag(group){
 
 function buildPicker(){
   const shots = userPhotos();
+  const found = checkedAnimals();
   pickGrid.innerHTML = ANIMALS.map((a, i) => {
     const name = currentLang === "en" ? a.en : a.zh;
     const tag = groupTag(a.group);
     const shot = shots[a.en];
-    return `<button type="button" class="pick" data-i="${i}">
+    return `<button type="button" class="pick${found.has(a.en) ? " found" : ""}" data-i="${i}">
         <img src="${esc(shot || a.img)}" alt="${esc(name)}" loading="lazy">
         <span class="pn">${esc(name)}</span>
-        ${tag ? `<span class="tag">${esc(tag)}</span>` : ""}
+        <span class="pmeta">
+          <span class="tag">${esc(tag)}</span>
+          <span class="stars" title="${esc(t("rare" + (a.rare || 1)))}">${stars(a.rare)}</span>
+        </span>
       </button>`;
   }).join("");
 }
@@ -1212,6 +1282,7 @@ function detailMarkup(animal, i){
   const sections = copy ? [["secId", copy.id], ["secHab", copy.hab],
                           ["secSpot", copy.spot], ["secFact", copy.fact]] : [];
   const shot = userPhotos()[animal.en];
+  const found = checkedAnimals().has(animal.en);
   const prev = ANIMALS[i - 1], next = ANIMALS[i + 1];
   const label = a => a ? esc(currentLang === "en" ? a.en : a.zh) : "";
 
@@ -1221,12 +1292,18 @@ function detailMarkup(animal, i){
       <span class="dt-count">${i + 1} / ${ANIMALS.length}</span>
     </div>
     <div class="dt-inner" id="dtInner">
-      <div class="dt-hero-wrap">
+      <div class="dt-hero-wrap${found ? " found" : ""}">
         <img class="dt-hero fade-img" src="${esc(shot || animal.img)}" alt="${esc(name)}">
         ${tag ? `<span class="dt-tag">${esc(tag)}</span>` : ""}
         <div class="dt-hero-scrim">
-          <div class="dt-name">${esc(name)}</div>
-          <div class="dt-meta">${esc(alt)}${d ? ` · <span class="dt-sci">${esc(d.sci)}</span>` : ""}</div>
+          <div>
+            <div class="dt-name">${esc(name)}</div>
+            <div class="dt-meta">${esc(alt)}${d ? ` · <span class="dt-sci">${esc(d.sci)}</span>` : ""}</div>
+          </div>
+          <div class="dt-rare">
+            <div class="dt-stars">${stars(animal.rare)}</div>
+            <div class="dt-rare-text">${esc(t("rare" + (animal.rare || 1)))}</div>
+          </div>
         </div>
       </div>
       ${sections.map(([k, v]) => `<div class="dt-sec">
