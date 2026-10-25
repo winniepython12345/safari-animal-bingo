@@ -37,7 +37,7 @@
     background:var(--cream);
     border:2px solid var(--gold);
     border-radius:18px;
-    padding:22px 18px 26px;
+    padding:52px 18px 26px;
     position:relative;
     box-shadow:0 10px 30px rgba(60,45,10,0.12);
   }
@@ -143,26 +143,35 @@
   .cell.has-img .name{font-size:0.5rem;color:#fff;}
   .cell .label{position:relative;z-index:2;}
 
-  .topbar{
-    display:flex;
-    align-items:center;
-    gap:8px;
+  .stage{
+    position:relative;
     width:100%;
     max-width:480px;
-    margin-bottom:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .corner-ctrl{
+    position:absolute;
+    top:12px;
+    right:13px;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    gap:5px;
   }
   .lang-toggle{
     flex:0 0 auto;
     border:1px solid var(--gold);
     background:transparent;
     color:var(--olive);
-    font-size:0.7rem;
+    font-size:0.66rem;
     font-weight:700;
-    padding:10px 14px;
-    border-radius:22px;
+    padding:6px 10px;
+    border-radius:20px;
     cursor:pointer;
     font-family:inherit;
-    background:rgba(255,253,248,0.75);
+    background:rgba(255,253,248,0.9);
   }
   .lang-toggle:active{opacity:0.7;}
 
@@ -237,34 +246,30 @@
 
   .viewtabs{
     display:flex;
-    gap:6px;
-    width:100%;
-    max-width:480px;
-    background:rgba(255,253,248,0.75);
+    gap:3px;
+    background:rgba(255,253,248,0.9);
     border:1px solid var(--gold-soft);
-    border-radius:26px;
-    padding:5px;
-    flex:1;
-    min-width:0;
+    border-radius:20px;
+    padding:3px;
   }
   .vtab{
-    flex:1;
     border:none;
     background:transparent;
     color:var(--olive);
     font-family:inherit;
-    font-size:0.85rem;
+    font-size:0.66rem;
     font-weight:700;
-    padding:9px 6px;
-    border-radius:22px;
+    padding:5px 10px;
+    border-radius:17px;
     cursor:pointer;
+    white-space:nowrap;
   }
   .vtab.active{
     background:var(--olive);
     color:#fff;
   }
 
-  .guide-card{padding:18px 16px 22px;}
+  .guide-card{padding:52px 16px 22px;}
   .guide-hint{
     text-align:center;
     font-size:0.76rem;
@@ -419,7 +424,8 @@
 </head>
 <body>
 
-<div class="topbar">
+<div class="stage">
+<div class="corner-ctrl">
   <div class="viewtabs">
     <button type="button" class="vtab active" id="tabBingo">賓果卡</button>
     <button type="button" class="vtab" id="tabGuide">動物圖鑑</button>
@@ -466,6 +472,7 @@
   </div>
   <div id="guideDetail" hidden></div>
 </div>
+</div><!-- /stage -->
 
 <div class="win-overlay" id="winOverlay" hidden>
   <div class="win-modal">
