@@ -320,13 +320,21 @@
     object-fit:cover;
     display:block;
   }
+  .pick .pnrow{
+    display:flex;
+    align-items:baseline;
+    gap:3px;
+    padding:0 5px;
+  }
   .pick .pn{
+    flex:1 1 auto;
+    min-width:0;
     font-size:0.7rem;
     font-weight:700;
     color:var(--ink);
     line-height:1.2;
-    padding:0 3px;
-    word-break:break-word;
+    word-break:normal;
+    overflow-wrap:break-word;
   }
   .pick .tag{
     font-size:0.56rem;
@@ -335,20 +343,23 @@
     color:var(--gold);
     white-space:nowrap;
   }
-  /* sits just under the picture, hard against the right edge */
+  /* on the name's own line, hard against the right edge */
   .pick .stars{
-    align-self:flex-end;
-    padding-right:6px;
-    margin-bottom:-3px;
-    font-size:0.54rem;
-    line-height:1;
+    flex:0 0 auto;
+    font-size:0.46rem;
+    letter-spacing:-0.3px;
     color:var(--gold);
     white-space:nowrap;
   }
   /* already ticked off on the bingo card */
-  .pick.found{
-    outline:3px solid var(--check);
-    outline-offset:-3px;
+  .pick{position:relative;}
+  .pick.found::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:3px solid var(--check);
+    border-radius:8px;
+    pointer-events:none;
   }
 
   /* ---- field guide detail ---- */
@@ -395,8 +406,14 @@
     object-fit:cover;
     display:block;
   }
-  .dt-hero-wrap.found{
-    box-shadow:0 0 0 3px var(--check), 0 8px 22px rgba(60,45,10,0.16);
+  .dt-hero-wrap.found::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:3px solid var(--check);
+    border-radius:14px;
+    pointer-events:none;
+    z-index:3;
   }
   .dt-titlerow{
     display:flex;
@@ -446,22 +463,22 @@
   }
 
   .dt-sec{
-    margin-top:20px;
-    padding-top:16px;
+    margin-top:13px;
+    padding-top:11px;
     border-top:1px solid rgba(216,195,145,0.5);
   }
-  .dt-sec:first-of-type{border-top:none;padding-top:4px;}
+  .dt-sec:first-of-type{border-top:none;padding-top:2px;}
   .dt-label{
-    font-size:0.66rem;
+    font-size:0.84rem;
     font-weight:700;
-    letter-spacing:2px;
+    letter-spacing:1px;
     color:var(--gold);
-    margin-bottom:6px;
+    margin-bottom:3px;
   }
   .dt-text{
     font-size:0.84rem;
     color:#5f564a;
-    line-height:1.85;
+    line-height:1.7;
   }
 
   .dt-nav{
@@ -1250,8 +1267,10 @@ function buildPicker(){
     const shot = shots[a.en];
     return `<button type="button" class="pick${found.has(a.en) ? " found" : ""}" data-i="${i}">
         <img src="${esc(shot || a.img)}" alt="${esc(name)}" loading="lazy">
-        <span class="stars" title="${esc(t("rare" + (a.rare || 1)))}">${stars(a.rare)}</span>
-        <span class="pn">${esc(name)}</span>
+        <span class="pnrow">
+          <span class="pn">${esc(name)}</span>
+          <span class="stars" title="${esc(t("rare" + (a.rare || 1)))}">${stars(a.rare)}</span>
+        </span>
         ${tag ? `<span class="tag">${esc(tag)}</span>` : ""}
       </button>`;
   }).join("");
