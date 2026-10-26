@@ -500,6 +500,7 @@
     padding:9px 12px;
     cursor:pointer;
     font-family:inherit;
+    text-align:left;
     transition:border-color .18s ease, background .18s ease;
   }
   .dt-nav button:hover{border-color:var(--gold);background:#fffdf8;}
@@ -540,17 +541,8 @@
 
   /* ---- polish pass ---- */
   #guidePicker::-webkit-scrollbar,
-  #guideDetail::-webkit-scrollbar{width:7px;}
-  #guidePicker::-webkit-scrollbar-track,
-  #guideDetail::-webkit-scrollbar-track{background:transparent;}
-  #guidePicker::-webkit-scrollbar-thumb,
-  #guideDetail::-webkit-scrollbar-thumb{
-    background:rgba(169,134,58,0.3);
-    border-radius:4px;
-  }
-  #guidePicker::-webkit-scrollbar-thumb:hover,
-  #guideDetail::-webkit-scrollbar-thumb:hover{background:rgba(169,134,58,0.5);}
-  #guidePicker,#guideDetail{scrollbar-width:thin;scrollbar-color:rgba(169,134,58,0.35) transparent;}
+  #guideDetail::-webkit-scrollbar{width:0;height:0;}
+  #guidePicker,#guideDetail{scrollbar-width:none;-ms-overflow-style:none;}
 
   @keyframes viewIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   .view-in{animation:viewIn .3s cubic-bezier(.22,.7,.3,1);}
